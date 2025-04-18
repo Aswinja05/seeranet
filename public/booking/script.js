@@ -1,0 +1,625 @@
+
+// Main routing function to determine which page to load
+console.log(window.location.pathname === "/booking/blouse");
+let bookingContainer = document.getElementsByClassName("booking-container")[0];
+
+// Route handling
+if (window.location.pathname === "/booking/blouse") {
+  renderBlousePage();
+} else if (window.location.pathname === "/booking/draping") {
+  renderDrapingPage();
+}
+
+// ====== BLOUSE PAGE FUNCTIONALITY ======
+
+// Render the blouse booking page HTML
+function renderBlousePage() {
+  bookingContainer.innerHTML = `
+      <div class="section">
+        <h2 class="section-title">Select Lining Option</h2>
+        <div class="options-grid">
+          <div class="option-card selected">
+            <div class="option-check"><i class="fas fa-check"></i></div>
+            <div class="option-name">Without Lining</div>
+            <div class="option-price">Free</div>
+          </div>
+
+          <div class="option-card">
+            <div class="option-check"><i class="fas fa-check"></i></div>
+            <div class="option-name">With Lining</div>
+            <div class="option-price">
+              <span class="price-highlight">+₹49</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Design Selection Section -->
+      <div class="section">
+        <h2 class="section-title">Choose Design</h2>
+        
+        <div class="design-gallery">
+            
+          <div class="design-item selected">
+            <div class="design-check"><i class="fas fa-check"></i></div>
+            <div class="design-image">
+              <img
+                src="/imgs/WhatsApp Image 2025-04-09 at 19.41.16_9df32446.jpg"
+                alt="Classic Design"
+              />
+            </div>
+            <div class="design-name">Classic</div>
+            <div class="option-price">Free</div>
+          </div>
+
+          <div class="design-item">
+            <div class="design-check"><i class="fas fa-check"></i></div>
+            <div class="design-image">
+              <img
+                src="/imgs/WhatsApp Image 2025-04-08 at 22.12.32_bf96343f.jpg"
+                alt="Sleeveless"
+              />
+            </div>
+            <div class="design-name">Sleeveless</div>
+            <div class="option-price">Free</div>
+          </div>
+
+          <div class="design-item">
+            <div class="design-check"><i class="fas fa-check"></i></div>
+            <div class="design-image">
+              <img
+                src="/imgs/WhatsApp Image 2025-04-08 at 22.12.33_5ac72e2e.jpg"
+                alt="Princess Cut"
+              />
+            </div>
+            <div class="design-name">Princess Cut</div>
+            <div class="option-price-type">
+              <span class="price-highlight">+₹149</span>
+            </div>
+          </div>
+
+          <div class="design-item">
+            <div class="design-check"><i class="fas fa-check"></i></div>
+            <div class="design-image">
+              <img
+                src="/imgs/WhatsApp Image 2025-04-08 at 22.12.32_eefd16f4.jpg"
+                alt="High Neck"
+              />
+            </div>
+            <div class="design-name">High Neck</div>
+            <div class="option-price-type">
+              <span class="price-highlight">+₹89</span>
+            </div>
+          </div>
+
+          <div class="design-item">
+            <div class="design-check"><i class="fas fa-check"></i></div>
+            <div class="design-image">
+              <img
+                src="/imgs/WhatsApp Image 2025-04-08 at 22.12.34_66b5aca8.jpg"
+                alt="Boat Neck"
+              />
+            </div>
+            <div class="design-name">Boat Neck</div>
+            <div class="option-price-type">
+              <span class="price-highlight">+₹89</span>
+            </div>
+          </div>
+
+          <div class="design-item">
+            <div class="design-check"><i class="fas fa-check"></i></div>
+            <div class="design-image">
+              <img
+                src="/imgs/WhatsApp Image 2025-04-08 at 22.12.31_004fcb1e.jpg"
+                alt="Designer Back"
+              />
+            </div>
+            <div class="design-name">Back Design</div>
+            <div class="option-price-type">
+              <span class="price-highlight">+₹199</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="upload-box">
+          <div class="upload-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <div class="upload-text">Upload Reference Image</div>
+          <div class="upload-note">JPG, PNG or PDF, max 5MB</div>
+        </div>
+      </div>
+
+      <!-- Measurement Options Section -->
+      <div class="section">
+        <h2 class="section-title">Measurement Options</h2>
+        <div class="options-grid">
+          <div class="option-card selected">
+            <div class="option-check"><i class="fas fa-check"></i></div>
+            <div class="option-image">
+              <img
+                src="/imgs/ChatGPT Image Apr 9, 2025, 08_05_54 PM.png"
+                alt="Provide Blouse for Measurement"
+              />
+            </div>
+            <div class="option-name">Provide Measurement Blouse</div>
+            <div class="option-price">Free</div>
+          </div>
+
+          <div class="option-card">
+            <div class="option-check"><i class="fas fa-check"></i></div>
+            <div class="option-image">
+              <img
+                src="/imgs/ChatGPT Image Apr 9, 2025, 07_58_31 PM.png"
+                alt="Home Visit for Measurement"
+              />
+            </div>
+            <div class="option-name">Home Visit for Measurement</div>
+            <div class="option-price">
+              <span class="price-highlight">+₹29</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="option-card"
+          style="margin-top: 15px; opacity: 0.7; cursor: not-allowed"
+        >
+          <div class="option-image">
+            <img
+              src="/imgs/ChatGPT Image Apr 9, 2025, 08_12_29 PM.png"
+              alt="AI Measurement"
+            />
+          </div>
+          <div class="option-name"><span class="coming-soon">Coming Soon</span>
+            AI Measurement 
+          </div>
+          <div class="option-price">Premium Feature</div>
+        </div>
+      </div>
+
+      <!-- Total Section -->
+      <div class="total-section">
+        <div class="total-row">
+          <span>Base Price</span>
+          <span>₹249</span>
+        </div>
+        <div class="total-row">
+          <span>Lining</span>
+          <span>₹0</span>
+        </div>
+        <div class="total-row">
+          <span>Measurement</span>
+          <span>₹0</span>
+        </div>
+        <div class="total-row">
+          <span>Design</span>
+          <span id="design-charge">₹0</span>
+        </div>
+        <div class="total-row">
+          <span>Total</span>
+          <span id="design-charge">₹0</span>
+        </div>
+        <div class="total-row final">
+          <span>Total</span>
+          <span>₹249</span>
+        </div>
+      </div>
+       
+      <!-- Button Group -->
+      <div class="button-group">
+        <button class="btn btn-secondary">Add to Cart</button>
+        <button class="btn btn-primary">Go to Cart</button>
+      </div>`;
+
+  // Initialize blouse page event listeners
+  initializeBlousePageEvents();
+}
+
+// Initialize event listeners and functionality for blouse page
+function initializeBlousePageEvents() {
+  const optionCards = document.querySelectorAll(".option-card");
+  const designItems = document.querySelectorAll(".design-item");
+
+  // Setup option selection
+  optionCards.forEach((card) => {
+    if (!card.style.cursor || card.style.cursor !== "not-allowed") {
+      card.addEventListener("click", function() {
+        const group = this.closest(".options-grid");
+        
+        group.querySelectorAll(".option-card").forEach((c) => {
+          c.classList.remove("selected");
+        });
+        
+        this.classList.add("selected");
+        updateBlouseTotal();
+      });
+    }
+  });
+
+  // Setup design selection
+  designItems.forEach((item) => {
+    item.addEventListener("click", function() {
+      designItems.forEach((design) => {
+        design.classList.remove("selected");
+      });
+      
+      this.classList.add("selected");
+      updateBlouseTotal();
+    });
+  });
+
+  // Setup file upload
+  setupFileUpload();
+
+  // Setup cart buttons
+  setupCartButtons("Blouse Stitching");
+
+  // Initial price calculation
+  updateBlouseTotal();
+}
+
+// Calculate and update the blouse total price
+function updateBlouseTotal() {
+  let total = 249; // Base price for blouse
+  let liningCharge = 0;
+  let measurementCharge = 0;
+  let designCharge = 0;
+
+  // Lining Option
+  const liningOption = document
+    .querySelectorAll(".options-grid")[0]
+    .querySelector(".option-card.selected");
+  if (
+    liningOption &&
+    liningOption
+      .querySelector(".option-name")
+      .textContent.includes("With Lining")
+  ) {
+    liningCharge = 49;
+  }
+
+  // Measurement Option
+  const measurementOption = document
+    .querySelectorAll(".options-grid")[1]
+    .querySelector(".option-card.selected");
+  if (
+    measurementOption &&
+    measurementOption
+      .querySelector(".option-name")
+      .textContent.includes("Home Visit")
+  ) {
+    measurementCharge = 29;
+  }
+
+  // Design Option
+  const selectedDesign = document.querySelector(".design-item.selected");
+  if (selectedDesign) {
+    const priceSpan = selectedDesign.querySelector(".price-highlight");
+    if (priceSpan) {
+      designCharge = parseInt(priceSpan.textContent.replace(/[^\d]/g, ""));
+    }
+  }
+
+  // Update each row in the summary
+  const totalRows = document.querySelectorAll(".total-row");
+  if (totalRows.length >= 5) {
+    totalRows[1].querySelector("span:last-child").textContent = `₹${liningCharge}`;
+    totalRows[2].querySelector("span:last-child").textContent = `₹${measurementCharge}`;
+    totalRows[3].querySelector("span:last-child").textContent = `₹${designCharge}`;
+    
+    const finalTotal = total + liningCharge + measurementCharge + designCharge;
+    totalRows[4].querySelector("span:last-child").textContent = `₹${finalTotal}`;
+    totalRows[5].querySelector("span:last-child").textContent = `₹${finalTotal}`;
+  }
+}
+
+// ====== DRAPING PAGE FUNCTIONALITY ======
+
+// Render the draping booking page HTML
+function renderDrapingPage() {
+  bookingContainer.innerHTML = `
+      <div class="section">
+        <h2 class="section-title">Select Saree Draping Style</h2>
+        <div class="design-gallery">
+          <div class="design-item selected">
+            <div class="design-check"><i class="fas fa-check"></i></div>
+            <div class="design-image">
+              <img
+                src="/imgs/WhatsApp Image 2025-04-10 at 16.50.34_35f47445.jpg"
+                alt="Traditional Draping"
+              />
+            </div>
+            <div class="design-name">Traditional</div>
+            <div class="option-price">₹999</div>
+          </div>
+
+          <div class="design-item">
+            <div class="design-check"><i class="fas fa-check"></i></div>
+            <div class="design-image">
+              <img
+                src="/imgs/WhatsApp Image 2025-04-10 at 16.50.33_1898b69a.jpg"
+                alt="South Indian Style"
+              />
+            </div>
+            <div class="design-name">South Indian</div>
+            <div class="option-price">₹460</div>
+          </div>
+          
+          <div class="design-item" style="opacity: 0.7; cursor: not-allowed;">
+            <div class="design-image">
+              <img
+                src="/imgs/WhatsApp Image 2025-04-10 at 16.50.33_6db9f89f.jpg"
+                alt="Bengali Style"
+              />
+            </div>
+            <div class="design-name"><span class="coming-soon">Coming Soon</span>Bengali Style</div>
+            <div class="option-price">₹526</div>
+          </div>
+
+          <div class="design-item" style="opacity: 0.7; cursor: not-allowed;">
+            <div class="design-image">
+              <img
+                src="/imgs/WhatsApp Image 2025-04-10 at 16.50.32_f6590ff7.jpg"
+                alt="Maharashtrian Style"
+              />
+            </div>
+            <div class="design-name"><span class="coming-soon">Coming Soon</span>Maharashtrian </div>
+            <div class="option-price">₹820</div>
+          </div>
+
+          
+
+          <div class="design-item" style="opacity: 0.7; cursor: not-allowed;">
+            <div class="design-image">
+              <img
+                src="/imgs/WhatsApp Image 2025-04-10 at 16.50.32_dd0d4202.jpg"
+                alt="Gujarati Style"
+              />
+            </div>
+            <div class="design-name"><span class="coming-soon">Coming Soon</span>Gujarati </div>
+            <div class="option-price">₹800</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessories Section -->
+      <div class="section">
+        <h2 class="section-title">Add Accessories</h2>
+        <div class="options-grid">
+          <div class="option-card" style="opacity: 0.7; cursor: not-allowed;">
+            <div class="option-image">
+              <img
+                src="https://i.pinimg.com/originals/ac/11/9e/ac119e6f01360ef96f5d7a64171fad51.jpg"
+                alt="Jewelry Set"
+              />
+            </div>
+            <div class="option-name"><span class="coming-soon">Coming Soon</span>Jewelry Set </div>
+            <div class="option-price">
+              <span class="price-highlight">+₹299</span>
+            </div>
+          </div>
+
+          <div class="option-card" style="opacity: 0.7; cursor: not-allowed;">
+            <div class="option-image">
+              <img
+                src="https://cdn0.weddingwire.in/article/2483/original/960/jpg/113842-makeover-by-sheetal-dey2.jpeg"
+                alt="Hair Accessories"
+              />
+            </div>
+            <div class="option-name"><span class="coming-soon">Coming Soon</span>Hair Accessories </div>
+            <div class="option-price">
+              <span class="price-highlight">+₹149</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Special Instructions -->
+      <div class="section">
+        <h2 class="section-title">Special Instructions</h2>
+        
+        <div class="upload-box">
+          <div class="upload-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <div class="upload-text">Upload Reference Image</div>
+          <div class="upload-note">JPG, PNG or PDF, max 5MB</div>
+        </div>
+        
+      </div>
+
+      <!-- Total Section -->
+      <div class="total-section">
+        <div class="total-row">
+          <span>Draping Style</span>
+          <span id="draping-charge">₹999</span>
+        </div>
+        <div class="total-row">
+          <span>Accessories</span>
+          <span id="accessories-charge">₹0</span>
+        </div>
+        <div class="total-row">
+          <span>Location Fee</span>
+          <span id="location-charge">₹0</span>
+        </div>
+        <div class="total-row final">
+          <span>Total</span>
+          <span id="total-charge">₹999</span>
+        </div>
+      </div>
+
+      <!-- Button Group -->
+      <div class="button-group">
+        <button class="btn btn-secondary">Add to Cart</button>
+        <button class="btn btn-primary">Go to Cart</button>
+      </div>`;
+
+  // Initialize draping page event listeners
+  initializeDrapingPageEvents();
+}
+
+// Initialize event listeners and functionality for draping page
+function initializeDrapingPageEvents() {
+  const designItems = document.querySelectorAll(".design-item:not([style*='cursor: not-allowed'])");
+
+  // Setup design selection
+  designItems.forEach((item) => {
+    item.addEventListener("click", function() {
+      designItems.forEach((design) => {
+        design.classList.remove("selected");
+      });
+      
+      this.classList.add("selected");
+      updateDrapingTotal();
+    });
+  });
+
+  // Setup file upload
+  setupFileUpload();
+
+  // Setup cart buttons
+  setupCartButtons("Saree Draping");
+
+  // Initial price calculation
+  updateDrapingTotal();
+}
+
+// Calculate and update the draping total price
+function updateDrapingTotal() {
+  // Get selected draping style price
+  const selectedStyle = document.querySelector(".design-item.selected");
+  let drapingCharge = parseInt(selectedStyle.querySelector(".option-price").textContent.replace(/[^\d]/g, ""));
+  
+  // No accessories available yet
+  let accessoriesCharge = 0;
+  let locationCharge = 0;
+  
+  // Update total section
+  document.getElementById("draping-charge").textContent = `₹${drapingCharge}`;
+  document.getElementById("accessories-charge").textContent = `₹${accessoriesCharge}`;
+  document.getElementById("location-charge").textContent = `₹${locationCharge}`;
+  document.getElementById("total-charge").textContent = `₹${drapingCharge + accessoriesCharge + locationCharge}`;
+}
+
+// ====== SHARED FUNCTIONALITY ======
+
+// Setup file upload functionality for both pages
+function setupFileUpload() {
+  const uploadBox = document.querySelector(".upload-box");
+  if (uploadBox) {
+    uploadBox.addEventListener("click", function() {
+      // Create file input element if it doesn't exist
+      if (!document.querySelector('input[type="file"]')) {
+        const fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = ".jpg,.jpeg,.png,.pdf";
+        fileInput.style.display = "none";
+        fileInput.addEventListener("change", function() {
+          if (this.files.length > 0) {
+            const fileName = this.files[0].name;
+            document.querySelector(".upload-text").textContent = fileName;
+            document.querySelector(".upload-note").textContent = "File selected";
+            document.querySelector(".upload-box").style.backgroundColor = "#fdf5f6";
+          }
+        });
+        document.body.appendChild(fileInput);
+      }
+      
+      // Trigger file selector
+      document.querySelector('input[type="file"]').click();
+    });
+  }
+}
+
+// Setup cart button functionality for both pages
+function setupCartButtons(serviceType) {
+  // Handle Add to Cart button
+  const addToCartBtn = document.querySelector(".btn-secondary");
+  if (addToCartBtn) {
+    addToCartBtn.addEventListener("click", function() {
+      // Prepare form data based on service type
+      const formData = new FormData();
+      formData.append("serviceType", serviceType);
+      
+      if (serviceType === "Blouse Stitching") {
+        // Get selected options for blouse
+        const selectedLining = document
+          .querySelectorAll(".options-grid")[0]
+          .querySelector(".option-card.selected .option-name").textContent;
+        const selectedDesign = document.querySelector(
+          ".design-item.selected .design-name"
+        ).textContent;
+        const selectedMeasurement = document
+          .querySelectorAll(".options-grid")[1]
+          .querySelector(".option-card.selected .option-name").textContent;
+        
+        // Calculate final price
+        const totalPrice = document.querySelector(".total-row.final span:last-child").textContent;
+        
+        formData.append("lining", selectedLining);
+        formData.append("design", selectedDesign);
+        formData.append("measurement", selectedMeasurement);
+        formData.append("basePrice", 249);
+      } 
+      else if (serviceType === "Saree Draping") {
+        // Get selected options for draping
+        const selectedStyle = document.querySelector(".design-item.selected .design-name").textContent;
+        const selectedStylePrice = parseInt(document.querySelector(".design-item.selected .option-price").textContent.replace(/[^\d]/g, ""));
+        const totalPrice = document.getElementById("total-charge").textContent;
+        const specialInstructions = document.querySelector(".instruction-box")?.value || "";
+        
+        formData.append("drapingStyle", selectedStyle);
+        formData.append("design", "draping");
+        formData.append("basePrice", selectedStylePrice);
+        formData.append("instructions", specialInstructions);
+      }
+      
+      // Check if reference image was uploaded
+      const fileInput = document.querySelector('input[type="file"]');
+      if (fileInput && fileInput.files.length > 0) {
+        formData.append("referenceImage", fileInput.files[0]);
+      }
+      
+      console.log(formData);
+      
+      // Send to server
+      fetch("/api/booking/add-to-cart", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            // Update cart badge
+            const cartBadges = document.querySelectorAll(".cart-badge");
+            const totalItems = data.cart.items.length;
+            cartBadges.forEach((badge) => {
+              badge.textContent = totalItems;
+            });
+            
+            // Show success message
+            alert("Item added to cart successfully!");
+          }
+        })
+        .catch((error) => {
+          console.error("Error adding to cart:", error);
+          alert("Failed to add item to cart. Please try again.");
+        });
+    });
+  }
+  
+  // Handle Go to Cart button
+  const goToCartBtn = document.querySelector(".btn-primary");
+  if (goToCartBtn) {
+    goToCartBtn.addEventListener("click", function() {
+      window.location.href = "/cart";
+    });
+  }
+}
+
+// Initialize everything when the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", function() {
+  // The page-specific initialization functions are called separately
+  // after their respective HTML is rendered
+});
