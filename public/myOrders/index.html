@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seera - My Orders</title>
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../myOrders/style.css">
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <img
+        src="/imgs/eera-removebg-preview.png"
+        alt="Seera Logo"
+        class="logo"
+      />
+
+      <div class="header-icons">
+        <a href="#"><i class="fas fa-search"></i></a>
+        <a href="/cart" class="cart-icon">
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+        <!-- <div class="coins">
+          <i class="fas fa-coins coin-icon"></i>
+          <span id="headerCoins">50</span>
+        </div> -->
+      </div>
+    </header>
+
+    <!-- Orders Container -->
+    <div class="orders-container">
+      <h1 class="orders-title">My Orders</h1>
+
+      <div class="orders-empty" style="display: none">
+        <div class="empty-icon">
+          <i class="fas fa-shopping-bag"></i>
+        </div>
+        <div class="empty-text">You haven't placed any orders yet</div>
+        <button class="btn btn-primary" onclick="window.location.href='/';">
+          Start Shopping
+        </button>
+      </div>
+
+      <div class="orders-list" id="ordersList">
+        <!-- Orders will be loaded here dynamically -->
+         
+      </div>
+    </div>
+
+    <div id="orderModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Order Details</h2>
+          <span class="close">&times;</span>
+        </div>
+        <div class="modal-body" id="modalContent">
+          <!-- Order details will be loaded here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <div class="bottom-nav">
+      <div class="bottom-nav-menu">
+        <div class="bottom-nav-item" onclick="window.location.href='/';">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </div>
+
+        <div class="bottom-nav-item active">
+          <i class="fas fa-calendar-check"></i>
+          <span>My Orders</span>
+        </div>
+
+        <div class="bottom-nav-item" onclick="window.location.href='/cart';">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Cart</span>
+        </div>
+
+        <div class="bottom-nav-item active" onclick="window.location.href='/profile';">
+          <i class="fas fa-user"></i>
+          <span>Account</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Template for order card -->
+    <template id="orderCardTemplate">
+      <div class="order-card">
+        <div class="order-header">
+          <div class="order-header-left">
+            <div class="order-number"></div>
+            <div class="order-date"></div>
+          </div>
+          <div class="order-header-right">
+            <span class="order-status"></span>
+            <span class="payment-badge"></span>
+          </div>
+        </div>
+        <div class="order-content">
+          <div class="order-items">
+            <!-- Order items will be appended here -->
+          </div>
+          <div class="order-summary">
+            <div class="order-total"></div>
+            <a href="#" class="order-details">
+              View Details <i class="fas fa-chevron-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- Template for order item -->
+    <template id="orderItemTemplate">
+      <div class="order-item">
+        <div class="item-image">
+          <img src="/imgs/WhatsApp Image 2025-04-09 at 19.41.16_9df32446.jpg" alt="Service image" />
+        </div>
+        <div class="item-details">
+          <div class="item-title"></div>
+          <div class="item-options">
+            <span class="item-quantity"></span>
+          </div>
+        </div>
+        <div class="item-price"></div>
+      </div>
+    </template>
+
+</body>
+<script src="../myOrders/script.js"></script>
+</html>

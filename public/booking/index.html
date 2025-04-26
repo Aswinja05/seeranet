@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seera - Book Stitching Service</title>
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../booking/style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <img
+        src="/imgs/eera-removebg-preview.png"
+        alt="Seera Logo"
+        class="logo"
+      />
+
+      <div class="header-icons">
+        <a href="#"><i class="fas fa-search"></i></a>
+        <a href="/cart">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-badge">1</span>
+        </a>
+        <div class="coins">
+          <i class="fas fa-coins coin-icon"></i>
+          <span id="headerCoins">50</span>
+        </div>
+      </div>
+    </header>
+    <!-- <img src="/imgs/From Fabric To Fashion (1).png" width="100%" /> -->
+    <!-- Booking Container -->
+
+
+    <div class="booking-container"></div>
+
+    <div class="bottom-nav">
+      <div class="bottom-nav-menu">
+        <div class="bottom-nav-item active" onclick="window.location.href='/';">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </div>
+
+        <div class="bottom-nav-item" onclick="window.location.href='/myOrders';" >
+          <i class="fas fa-calendar-check"></i>
+          <span>My Orders</span>
+        </div>
+
+        <div class="bottom-nav-item">
+          <i class="fas fa-shopping-cart" onclick="window.location.href='/cart';"></i>
+          <span>Cart</span>
+        </div>
+
+        <div class="bottom-nav-item" onclick="window.location.href='/profile';">
+          <i class="fas fa-user"></i>
+          <span>Account</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="../booking/script.js"></script>
+    
+  <script src="../coins-updater.js"></script>
+  </body>
+</html>

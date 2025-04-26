@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seera - Fabric Collection & Stitching Service</title>
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../home/style.css" />
+  </head>
+  <body>
+    <!-- Loader -->
+    <div id="loader">
+      <img src="imgs/eera-removebg-preview.png" alt="Seera Logo" class="logo" />
+      <p class="tagline">Your Doorstep Tailor</p>
+      <div class="loader-bar"></div>
+    </div>
+    <!-- Header -->
+    <header>
+      <div class="logo-container">
+        <div class="brand">
+          <img
+            src="imgs/eera-removebg-preview.png"
+            alt="Seera Logo"
+            class="logo"
+          />
+          <span><b>Your DoorStep Tailor</b></span>
+        </div>
+        <div class="mob_right">
+        <!-- <div class="mob-location-picker">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Your Location</span>
+          <i class="fas fa-chevron-down"></i>
+        </div> -->
+        
+        <button class="btn btn-primary loginBtn" onclick="window.location.href='/loginPage'">Login</button>
+        <div class="coins">
+          <i class="fas fa-coins coin-icon"></i>
+          <span id="headerCoins">50</span>
+        </div>
+      </div>
+      </div>
+      <div class="location-search">
+        <div class="location-picker">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Your Location</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search for services" />
+        </div>
+      </div>
+
+      <div class="header-icons">
+        <a href="#"><i class="fas fa-shopping-cart"></i></a>
+        <a href="#"><i class="fas fa-user"></i></a>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1>Doorstep Stitching Services</h1>
+
+      <!-- Service Categories -->
+      <div class="service-categories">
+        <div class="category-grid">
+          <div class="category-item" data-category="blouse">
+            <!-- <div class="new-launch">Starting at Just 250/-</div> -->
+            <div class="category-icon">
+              <img
+                src="imgs/WhatsApp_Image_2025-04-07_at_18.26.26_51587a2a-removebg-preview.png"
+                alt="Blouse Stitching"
+              />
+            </div>
+            <div class="category-name">Blouse Stitching</div>
+          </div>
+
+          <div class="category-item" data-category="draping">
+            <!-- <div class="new-launch">New</div> -->
+            <div class="category-icon">
+              <img
+                src="imgs/ChatGPT_Image_Apr_7__2025__07_11_42_PM-removebg-preview.png"
+                alt="Premium Stitching"
+              />
+            </div>
+            <div class="category-name">Saree Draping</div>
+          </div>
+
+          <div class="category-item" data-category="sareeAlteration">
+            <div class="category-icon">
+              <img
+                src="imgs/WhatsApp_Image_2025-04-07_at_18.26.26_51587a2a-removebg-preview.png"
+                alt="Saree Alterations"
+              />
+            </div>
+            <div class="category-name">Saree Alterations</div>
+          </div>
+
+          <div class="category-item" data-category="halfSaree"> 
+            <div class="category-icon">
+              <img
+                src="imgs/WhatsApp_Image_2025-04-07_at_18.26.26_51587a2a-removebg-preview.png"
+                alt="Salwar Stitching"
+              />
+            </div>
+            <div class="category-name">Half Saree</div>
+          </div>
+
+          <div class="category-item" data-category="designerBlouse">
+            <div class="category-icon">
+              <img
+                src="imgs/WhatsApp_Image_2025-04-07_at_18.26.26_51587a2a-removebg-preview.png"
+                alt="Designer Blouse"
+              />
+            </div>
+            <div class="category-name">Anarkali Dress</div>
+          </div>
+
+          <div class="category-item" data-category="UmbrellaFrock">
+            <div class="category-icon">
+              <img
+                src="imgs/WhatsApp_Image_2025-04-07_at_18.26.26_51587a2a-removebg-preview.png"
+                alt="Embroidery"
+              />
+            </div>
+            <div class="category-name">Umbrella Frock</div>
+          </div>
+
+          <div class="category-item" data-category="Lehanga">
+            <div class="category-icon">
+              <img
+                src="imgs/WhatsApp_Image_2025-04-07_at_18.26.26_51587a2a-removebg-preview.png"
+                alt="Express Delivery"
+              />
+            </div>
+            <div class="category-name">Lehanga</div>
+          </div>
+
+          <div class="category-item" data-category="Kurti">
+            <div class="category-icon">
+              <img
+                src="imgs/WhatsApp_Image_2025-04-07_at_18.26.26_51587a2a-removebg-preview.png"
+                alt="Fabric Collection"
+              />
+            </div>
+            <div class="category-name">Kurti Sets</div>
+          </div>
+
+          <div class="category-item" data-category="Salwar">
+            <div class="category-icon">
+              <img
+                src="imgs/WhatsApp_Image_2025-04-07_at_18.26.26_51587a2a-removebg-preview.png"
+                alt="Custom Designs"
+              />
+            </div>
+            <div class="category-name">Salwar Suit</div>
+          </div>
+
+          
+        </div>
+      </div>
+    </section>
+
+    <!-- Advertisement Section -->
+    <section class="advertisement">
+      <div class="ad-item">
+        <div class="service-card">
+          <div class="new-tag">NEW</div>
+          <img
+            src="imgs/From Fabric To Fashion (1).png"
+            alt="Insta Help Service"
+          />
+        </div>
+      </div>
+      <div class="ad-item">
+        <div class="service-card">
+          <img
+            src="imgs/From Fabric To Fashion (4).png"
+            alt="Weekly Bathroom Cleaning"
+          />
+        </div>
+      </div>
+      <div class="ad-item">
+        <div class="service-card">
+          <img
+            src="imgs/From Fabric To Fashion (3).png"
+            alt="Native Water Purifier"
+          />
+        </div>
+      </div>
+     
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+      <h2>How Seera Works</h2>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <div class="step-title">Book a Service</div>
+          <div class="step-description">
+            Choose the stitching service you need through our app or website
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-icon">
+            <i class="fas fa-truck"></i>
+          </div>
+          <div class="step-title">Fabric Collection</div>
+          <div class="step-description">
+            Our representative collects your fabric from your doorstep
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-icon">
+            <i class="fas fa-cut"></i>
+          </div>
+          <div class="step-title">Expert Stitching</div>
+          <div class="step-description">
+            Our skilled tailors stitch as per your requirements
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-icon">
+            <i class="fas fa-box"></i>
+          </div>
+          <div class="step-title">Delivery</div>
+          <div class="step-description">
+            Your stitched clothes are delivered to your doorstep
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Services -->
+    <!-- <section class="featured-services">
+      <h2>Our Featured Services</h2>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-image">
+          </div>
+          <div class="service-info">
+            <h3 class="service-title">Designer Blouse Stitching</h3>
+            <p class="service-description">
+              Get your saree blouse stitched perfectly by our expert tailors
+            </p>
+            <p class="service-price">Starting at ₹499</p>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-image">
+          </div>
+          <div class="service-info">
+            <h3 class="service-title">Salwar Kameez Stitching</h3>
+            <p class="service-description">
+              Perfect fit guaranteed with our made-to-measure service
+            </p>
+            <p class="service-price">Starting at ₹799</p>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-image">
+          </div>
+          <div class="service-info">
+            <h3 class="service-title">Express Stitching Service</h3>
+            <p class="service-description">
+              Get your clothes stitched within 48 hours
+            </p>
+            <p class="service-price">Starting at ₹699</p>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <section class="refer-coins-section">
+      <div class="refer-card">
+        <div class="refer-content">
+          <div class="refer-text">
+            <h3>Refer & Earn</h3>
+            <p>Get ₹150 for every friend who uses your code</p>
+          </div>
+          <div class="refer-icon">
+            <!-- <img src="refer-icon.png" alt="Refer Friends" /> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="coins-card">
+        <div class="coins-content">
+          <div class="coins-text">
+            <h3>UC Coins</h3>
+            <p>You have <strong>0 coins</strong> to redeem</p>
+          </div>
+          <div class="coins-icon">
+            <!-- <img src="coins-icon.png" alt="UC Coins" /> -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>About Seera</h3>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our Team</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3>For Customers</h3>
+          <ul>
+            <li><a href="#">How It Works</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Reviews</a></li>
+            <li><a href="#">FAQs</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3>Services</h3>
+          <ul>
+            <li><a href="#">Blouse Stitching</a></li>
+            <li><a href="#">Salwar Stitching</a></li>
+            <li><a href="#">Designer Services</a></li>
+            <li><a href="#">Saree Alterations</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3>Contact Us</h3>
+          <ul>
+            <li><a href="#">Email: contact@seera.com</a></li>
+            <li><a href="#">Phone: +91 9876543210</a></li>
+            <li><a href="#">Feedback</a></li>
+            <li><a href="#">Support</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="copyright">© 2025 Seera. All rights reserved.</div>
+    </footer>
+    
+
+    <div class="popup">
+      <div class="popup-content">
+        
+      </div>
+    </div>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <div class="bottom-nav">
+      <div class="bottom-nav-menu ">
+        <div class="bottom-nav-item active">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </div>
+
+        <div class="bottom-nav-item" onclick="window.location.href='/myOrders';">
+          <i class="fas fa-calendar-check"></i>
+          <span>My Orders</span>
+        </div>
+
+        <div class="bottom-nav-item"  onclick="window.location.href='/cart';">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Cart</span>
+        </div>
+
+        <div class="bottom-nav-item" onclick="window.location.href='/profile';">
+          <i class="fas fa-user"></i>
+          <span>Account</span>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="../home/script.js"></script>
+  <script src="../coins-updater.js"></script>
+</html>

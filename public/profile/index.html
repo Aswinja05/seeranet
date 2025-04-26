@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile - Seera</title>
+    <link rel="stylesheet" href="../profile/style.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <a href="/">
+        <img
+          src="/imgs/eera-removebg-preview.png"
+          alt="Seera Logo"
+          class="logo"
+        />
+      </a>
+      <div class="header-right">
+        <div class="coins">
+          <i class="fas fa-coins coin-icon"></i>
+          <span id="headerCoins">50</span>
+        </div>
+        <a href="/cart"><i class="fas fa-shopping-cart"></i></a>
+        <a href="/loginPage" id="logoutBtn"
+          ><i class="fas fa-sign-out-alt"></i
+        ></a>
+      </div>
+    </header>
+
+    <!-- Profile Content -->
+    <div class="profile-container">
+      <div class="profile-header">
+        <div class="profile-avatar" id="profileInitials">SU</div>
+        <div class="profile-details">
+          <h1 id="userName">Seera User</h1>
+          <p id="userEmail">user@example.com</p>
+          <p id="userPhone">+91 9876543210</p>
+          <div class="coins-display">
+            <i class="fas fa-coins"></i>
+            <span class="coin-value" id="userCoins">50</span>
+            <span class="coin-text">Coins Available</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-tabs">
+        <div class="profile-tab active" data-tab="profile">My Profile</div>
+        <div class="profile-tab" data-tab="orders">My Orders</div>
+        <div class="profile-tab" data-tab="refer">Refer & Earn</div>
+      </div>
+
+      <div id="profileTab" class="tab-content active">
+        <div class="tab-section">
+          <h2>Personal Information</h2>
+          <div class="detail-item">
+            <div class="detail-label">Full Name</div>
+            <div class="detail-value" id="detailName">Seera User</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Email Address</div>
+            <div class="detail-value" id="detailEmail">user@example.com</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Phone Number</div>
+            <div class="detail-value" id="detailPhone">+91 9876543210</div>
+          </div>
+          <button class="btn btn-outline" id="editProfileBtn">
+            Edit Profile
+          </button>
+        </div>
+
+        <div class="tab-section" id="editProfileSection" style="display: none">
+          <h2>Edit Profile</h2>
+          <form id="editProfileForm">
+            <div class="form-group">
+              <label for="editName">Full Name</label>
+              <input type="text" id="editName" name="name" required />
+            </div>
+            <div class="form-group">
+              <label for="editEmail">Email Address</label>
+              <input type="email" id="editEmail" name="email" required />
+            </div>
+            <div class="form-group">
+              <label for="editPhone">Phone Number</label>
+              <input type="tel" id="editPhone" name="phone" required />
+            </div>
+            <div class="form-row">
+              <button type="submit" class="btn btn-primary">
+                Save Changes
+              </button>
+              <button type="button" class="btn btn-outline" id="cancelEditBtn">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="tab-section">
+          <h2>Saved Addresses</h2>
+          <div id="addressesList">
+            <!-- Address items will be added dynamically -->
+          </div>
+          <button class="btn btn-outline" id="addAddressBtn">
+            Add New Address
+          </button>
+        </div>
+
+        <div class="tab-section" id="addAddressSection" style="display: none">
+          <h2>Add New Address</h2>
+          <form id="addAddressForm">
+            <div class="form-group">
+              <label for="addressType">Address Type</label>
+              <select
+                id="addressType"
+                name="type"
+                required
+                class="form-control"
+              >
+                <option value="Home">Home</option>
+                <option value="Work">Work</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="addressStreet">Street Address</label>
+              <input type="text" id="addressStreet" name="street" required />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="addressCity">City</label>
+                <input type="text" id="addressCity" name="city" required />
+              </div>
+              <div class="form-group">
+                <label for="addressState">State</label>
+                <input type="text" id="addressState" name="state" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="addressPincode">Pincode</label>
+              <input type="text" id="addressPincode" name="pincode" required />
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="isDefaultAddress" name="isDefault" />
+                Set as default address
+              </label>
+            </div>
+            <div class="form-row">
+              <button type="submit" class="btn btn-primary">
+                Save Address
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline"
+                id="cancelAddressBtn"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div id="ordersTab" class="tab-content">
+        <h2>My Orders</h2>
+        <div class="orders-list" id="ordersList">
+          <!-- Orders will be added dynamically -->
+          <div class="order-item">
+            <div class="order-header">
+              <span class="order-number">SEERA-123456789</span>
+              <span class="order-date">April 9, 2025</span>
+            </div>
+            <div class="order-details">
+              <div>
+                <span class="order-status status-processing">Processing</span>
+                <span class="order-total">₹549</span>
+              </div>
+              <a href="/order-details/123456789">View Details</a>
+            </div>
+          </div>
+          <div class="order-item">
+            <div class="order-header">
+              <span class="order-number">SEERA-987654321</span>
+              <span class="order-date">March 28, 2025</span>
+            </div>
+            <div class="order-details">
+              <div>
+                <span class="order-status status-delivered">Delivered</span>
+                <span class="order-total">₹799</span>
+              </div>
+              <a href="/order-details/987654321">View Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="referTab" class="tab-content">
+        <div class="refer-card">
+          <h2>Refer a Friend & Earn Coins</h2>
+          <p>
+            Share your referral code with friends and earn 50 coins when they
+            sign up!
+          </p>
+          <div class="referral-code">
+            <span id="referralCode">SEERA50</span>
+            <button class="copy-btn" id="copyCodeBtn">Copy</button>
+          </div>
+          <p>Share via:</p>
+          <div class="share-options">
+            <div class="share-option" title="WhatsApp">
+              <i class="fab fa-whatsapp"></i>
+            </div>
+            <div class="share-option" title="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </div>
+            <div class="share-option" title="Twitter">
+              <i class="fab fa-twitter"></i>
+            </div>
+            <div class="share-option" title="Email">
+              <i class="fas fa-envelope"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-section">
+          <h2>How It Works</h2>
+          <ol style="padding-left: 20px; line-height: 1.6">
+            <li>Share your unique referral code with friends and family.</li>
+            <li>
+              When they register using your code, they get 50 coins as a welcome
+              bonus.
+            </li>
+            <li>You receive 50 coins once they place their first order.</li>
+            <li>Redeem your coins for discounts on your next orders!</li>
+          </ol>
+        </div>
+
+        <div class="tab-section">
+          <h2>Referral History</h2>
+          <div id="referralHistory">
+            <p>No referrals yet. Start sharing your code to earn coins!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>About Seera</h3>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our Team</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3>For Customers</h3>
+          <ul>
+            <li><a href="#">How It Works</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Reviews</a></li>
+            <li><a href="#">FAQs</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3>Services</h3>
+          <ul>
+            <li><a href="#">Blouse Stitching</a></li>
+            <li><a href="#">Salwar Stitching</a></li>
+            <li><a href="#">Designer Services</a></li>
+            <li><a href="#">Saree Alterations</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3>Contact Us</h3>
+          <ul>
+            <li><a href="#">Email: contact@seera.com</a></li>
+            <li><a href="#">Phone: +91 9876543210</a></li>
+            <li><a href="#">Feedback</a></li>
+            <li><a href="#">Support</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="copyright">© 2025 Seera. All rights reserved.</div>
+    </footer>
+
+    
+  </body>
+  <script src="../profile/script.js"></script>
+</html>
