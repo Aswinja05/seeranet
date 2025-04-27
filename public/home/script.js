@@ -44,23 +44,28 @@ category_items.forEach((item) => {
         console.log("hidden after 5 seconds");
       }, 3000);
     } else if (category === "blouse") {
-      popup_content.innerHTML = `<div class="popup-item" type="plain"><img src="imgs/WhatsApp Image 2025-04-08 at 14.24.17_f895c482.jpg" alt="" srcset="" height="40%" width="fit-content">Plain Blouse</div>
-        <div class="popup-item" type="Designer"><img src="imgs/image.png" alt="" srcset="" height="40%" width="fit-content">Designer Blouse</div>
-        <div class="popup-item" type="aari"><img src="imgs/WhatsApp_Image_2025-04-08_at_14.24.53_b1949905-removebg-preview.png" alt="" srcset="" height="40%" width="fit-content">Aari Work Blouse</div>
-`;
-      let popup_items = document.querySelectorAll(".popup-item");
-      popup_items.forEach((item) => {
-        item.addEventListener("click", function () {
-          let type = item.getAttribute("type");
-          item.style.backgroundColor = "#caffc8";
-          item.style.border = "2px solid black";
-          if (isLoggedIn) {
-            window.location.href = `/booking/blouse`;
-          } else {
-            window.location.href = `/loginPage`;
-          }
-        });
-      });
+//       popup_content.innerHTML = `<div class="popup-item" type="plain"><img src="imgs/WhatsApp Image 2025-04-08 at 14.24.17_f895c482.jpg" alt="" srcset="" height="40%" width="fit-content">Plain Blouse</div>
+//         <div class="popup-item" type="Designer"><img src="imgs/image.png" alt="" srcset="" height="40%" width="fit-content">Designer Blouse</div>
+//         <div class="popup-item" type="aari"><img src="imgs/WhatsApp_Image_2025-04-08_at_14.24.53_b1949905-removebg-preview.png" alt="" srcset="" height="40%" width="fit-content">Aari Work Blouse</div>
+// `;
+      // let popup_items = document.querySelectorAll(".popup-item");
+      // popup_items.forEach((item) => {
+      //   item.addEventListener("click", function () {
+      //     let type = item.getAttribute("type");
+      //     item.style.backgroundColor = "#caffc8";
+      //     item.style.border = "2px solid black";
+      //     if (isLoggedIn) {
+      //       window.location.href = `/booking/blouse`;
+      //     } else {
+      //       window.location.href = `/loginPage`;
+      //     }
+      //   });
+      // });
+      if (isLoggedIn) {
+        window.location.href = `/booking/blouse`;
+      } else {
+        window.location.href = `/loginPage`;
+      }
     } else if (category === "draping") {
       if (isLoggedIn) {
         window.location.href = `/booking/draping`;
