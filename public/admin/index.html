@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Seera Admin Dashboard</title>
+  <link rel="stylesheet" href="../admin/style.css">
+</head>
+<body>
+  <header>
+
+    <img
+      src="/imgs/eera-removebg-preview.png"
+      alt="Seera Logo"
+      class="logo"
+    />
+    <h1>Admin Dashboard</h1>
+  
+</header>
+
+  <div class="container">
+    <section class="coins-section">
+      <h2>User Management</h2>
+      <form id="coinForm">
+        <div class="form-group">
+          <label for="emailOrPhone">User Email/Phone</label>
+          <input type="text" id="emailOrPhone" placeholder="Enter email or phone number" required>
+        </div>
+        <div class="form-group">
+          <label for="coins">Coins Amount</label>
+          <input type="number" id="coins" placeholder="Enter coins amount" required>
+        </div>
+        <button type="submit" class="btn">Add Coins</button>
+      </form>
+      <div id="coinResult"></div>
+    </section>
+
+    <section class="orders-section">
+      <h2>Orders Management</h2>
+      
+      <div class="filters">
+        <button class="filter-btn active" onclick="fetchOrders(); toggleActive(this);">All Orders</button>
+        <button class="filter-btn" onclick="fetchOrders('active'); toggleActive(this);">Active Orders</button>
+        <button class="filter-btn" onclick="fetchOrders('unpaid'); toggleActive(this);">Unpaid Orders</button>
+        <button class="filter-btn" onclick="fetchOrders('processing'); toggleActive(this);">Processing Orders</button>
+        <button class="filter-btn" onclick="fetchOrders('delivered'); toggleActive(this);">Delivered Orders</button>
+        <button class="filter-btn" onclick="fetchOrders('cancelled'); toggleActive(this);">Cancelled Orders</button>
+      </div>
+      
+      <div class="stats-row">
+        <div id="orderCount" class="stat-box">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Orders</div>
+        </div>
+      </div>
+      
+      <div class="table-container">
+        <table id="ordersTable">
+          <thead>
+            <tr>
+              <th>Order #</th>
+              <th>Customer</th>
+              <th>Status</th>
+              <th>Payment</th>
+              <th>Total</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="6" class="loading">Loading orders...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script src="../admin/script.js"></script>
+</body>
+</html>

@@ -11,6 +11,7 @@ const cartRoutes = require("./routes/cartRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const userRoutes = require("./routes/userRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
+const adminRoutes = require('./routes/adminRoutes');
 const dotenv = require("dotenv");
 dotenv.config();
 const app = express();
@@ -43,6 +44,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/booking", bookingRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/checkout", checkoutRoutes);
+app.use('/admin', adminRoutes);
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/home/index.html");
@@ -154,6 +156,14 @@ app.get("/orders", async (req, res) => {
 app.get("/myOrders", async (req, res) => {
   res.sendFile(__dirname + "/public/myOrders/index.html");
 })
+app.get('/admin', (req, res) => {
+
+    res.sendFile(__dirname + '/public/admin/index.html');
+  
+});
+
+
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
