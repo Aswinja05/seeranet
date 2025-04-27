@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       // If login is invalid
       alert('Invalid login ID or password');
+      window.location.reload(); // Reload the page to prompt again
       return;
     }
   } else {
