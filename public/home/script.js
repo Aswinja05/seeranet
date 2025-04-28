@@ -2,7 +2,7 @@ window.addEventListener('load', () => {
   document.getElementById('loader').style.display = 'none';
   document.getElementById('content').style.display = 'block';
 });
-
+document.querySelector(".popup").style.display = "none";
 
 let loginBtn = document.querySelector(".loginBtn");
 let isLoggedIn = false;
