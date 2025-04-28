@@ -16,10 +16,10 @@ const dotenv = require("dotenv");
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
-// "mongodb+srv://AdminNew:Aswin123@cluster0.phbtcqz.mongodb.net/Seera?retryWrites=true&w=majority"
+
 // Connect to MongoDB
 mongoose
-  .connect("mongodb+srv://AdminNew:Aswin123@cluster0.phbtcqz.mongodb.net/Seera?retryWrites=true&w=majority", {
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
