@@ -187,7 +187,7 @@ shareOptions.forEach((option) => {
   option.addEventListener("click", () => {
     const referralCode = document.getElementById("referralCode").textContent;
     const shareMessage = `Join Seera and get 50 coins on signup! Use my referral code: ${referralCode}`;
-    const shareUrl = "https://seera.com/register?referral=" + referralCode;
+    const shareUrl = "https://seeranet.in/register?referral=" + referralCode;
 
     if (option.title === "WhatsApp") {
       window.open(

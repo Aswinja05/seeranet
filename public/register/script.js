@@ -1,15 +1,16 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-  import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
 // Firebase configuration
 const firebaseConfig = {
-apiKey: "AIzaSyDnY863i24jhaOSQ9eHsA_FPZRho37J3dY",
-authDomain: "starry-hawk-458407-d2.firebaseapp.com",
-projectId: "starry-hawk-458407-d2",
-storageBucket: "starry-hawk-458407-d2.firebasestorage.app",
-messagingSenderId: "542074785081",
-appId: "1:542074785081:web:12285d55036c0f79b92ce8",
-measurementId: "G-K4Y6BL7656",
+  apiKey: "AIzaSyDnY863i24jhaOSQ9eHsA_FPZRho37J3dY",
+  authDomain: "starry-hawk-458407-d2.firebaseapp.com",
+  projectId: "starry-hawk-458407-d2",
+  storageBucket: "starry-hawk-458407-d2.firebasestorage.app",
+  messagingSenderId: "542074785081",
+  appId: "1:542074785081:web:12285d55036c0f79b92ce8",
+  measurementId: "G-K4Y6BL7656",
 };
 
 // Initialize Firebase
@@ -20,43 +21,45 @@ const auth = firebase.auth();
 let confirmationResult = null;
 let verifiedPhoneNumber = null;
 let firebaseIdToken = null;
+let globalReferralCode = null; // Global variable to store referral code
 
 // Check if there's a phone number in URL params (coming from login redirect)
 window.onload = function () {
-// Setup reCAPTCHA verifier
-window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
- "recaptcha-container",
- {
-   size: "invisible",
-   callback: (response) => {
-     // reCAPTCHA solved, allow sending OTP
-   },
- }
-);
+  // Setup reCAPTCHA verifier
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+   "recaptcha-container",
+   {
+     size: "invisible",
+     callback: (response) => {
+       // reCAPTCHA solved, allow sending OTP
+     },
+   }
+  );
 
-// Check for phone number in URL
-const urlParams = new URLSearchParams(window.location.search);
-const phoneParam = urlParams.get("phone");
-const referralCode = urlParams.get('referral');
-  
-  if (referralCode) {
+  // Check for phone number in URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const phoneParam = urlParams.get("phone");
+  globalReferralCode = urlParams.get('referral');
+    
+  if (globalReferralCode) {
     // If referral code exists in URL, populate the referral code field
-    const referralCodeInput = document.getElementById('referralCode');
+    const referralCodeInput = document.getElementById('referal');
     if (referralCodeInput) {
-      referralCodeInput.value = referralCode;
+      referralCodeInput.value = globalReferralCode;
       
       // You could also validate the referral code here
-      validateReferralCode(referralCode);
+      validateReferralCode(globalReferralCode);
     }
   }
-if (phoneParam) {
- document.getElementById("phoneNumber").value = phoneParam.replace(
-   "+91",
-   ""
- );
-}
-
+  
+  if (phoneParam) {
+   document.getElementById("phoneNumber").value = phoneParam.replace(
+     "+91",
+     ""
+   );
+  }
 };
+
 async function validateReferralCode(code) {
   try {
     const response = await fetch('/api/user/validate-referral', {
@@ -92,7 +95,7 @@ async function validateReferralCode(code) {
 }
 
 // Add event listener to validate referral code on blur
-const referralCodeInput = document.getElementById('referralCode');
+const referralCodeInput = document.getElementById('referal');
 if (referralCodeInput) {
   referralCodeInput.addEventListener('blur', () => {
     const code = referralCodeInput.value.trim();
@@ -101,6 +104,7 @@ if (referralCodeInput) {
     }
   });
 }
+
 // Handle phone number form submission
 document
 .getElementById("phoneNumberForm")
@@ -193,8 +197,10 @@ document
        "phoneVerificationContainer"
      ).style.display = "none";
      document.getElementById("registerForm").style.display = "block";
-     if (referralCode) {
-      document.getElementById("referal").value = referralCode;
+     
+     // Set referral code if it exists
+     if (globalReferralCode) {
+       document.getElementById("referal").value = globalReferralCode;
      }
    }
  } catch (error) {
@@ -247,7 +253,7 @@ document
  const password = document.getElementById("password").value;
  const confirmPassword =
    document.getElementById("confirmPassword").value;
-  const referalCode = document.getElementById("referal").value;
+ const referalCode = document.getElementById("referal").value;
  const terms = document.getElementById("terms").checked;
 
  // Basic validation
@@ -272,7 +278,7 @@ document
        email,
        phone: verifiedPhoneNumber,
        password,
-       referalCode,
+       referralCode: referalCode, // Corrected variable name here
        firebaseToken: firebaseIdToken,
      }),
    });

@@ -119,13 +119,16 @@ router.post('/registerWithPhone', async (req, res) => {
             date: new Date(),
             rewarded: false
           }
+        },
+        $inc: {
+          coins: 10
         }
       });
       
       // Give sign-up bonus to new user for using a referral code
-      await User.findByIdAndUpdate(user._id, {
-        $inc: { coins: 50 } // Additional 50 coins for using referral code
-      });
+      // await User.findByIdAndUpdate(user._id, {
+      //   $inc: { coins: 50 } // Additional 50 coins for using referral code
+      // });
     }
     
     // Set session
