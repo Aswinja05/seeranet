@@ -20,16 +20,28 @@ const PORT = process.env.PORT || 5000;
 // Initialize Firebase Admin SDK
 let serviceAccount;
 try {
-  // Check if the service account key is provided as a JSON string in env
-  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-  } else {
-    // Otherwise try to load it from a file
-    serviceAccount = require('./firebase-service-account.json');
-  }
+  // // Check if the service account key is provided as a JSON string in env
+  // if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  //   serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  // } else {
+  //   // Otherwise try to load it from a file
+  //   serviceAccount = require('./firebase-service-account.json');
+  //   console.log(serviceAccount)
+  // }
 
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert({
+      type: "service_account",
+      project_id: process.env.FIREBASE_PROJECT_ID,
+      private_key: process.env.FIREBASE_PRIVATE_KEY,
+      client_email: process.env.FIREBASE_CLIENT_EMAIL,
+      client_id: process.env.FIREBASE_CLIENT_ID,
+      auth_uri: process.env.FIREBASE_AUTH_URI,
+      token_uri: process.env.FIREBASE_TOKEN_URI,
+      auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_CERT_URL,
+      client_x509_cert_url: process.env.FIREBASE_CLIENT_CERT_URL,
+      universe_domain: process.env.FIREBASE_UNIVERSE_DOMAIN,
+    }),
   });
   console.log("Firebase Admin SDK initialized successfully");
 } catch (error) {
