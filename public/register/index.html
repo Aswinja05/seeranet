@@ -1,479 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register - Seera</title>
-    <style>
-        /* Reset and Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f9f9f9;
-            color: #333;
-        }
-        
-        /* Header Styles */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .logo {
-            height: 40px;
-        }
-        
-        /* Auth Container */
-        .auth-container {
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .auth-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .auth-header h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .auth-header p {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-row {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .form-row .form-group {
-            flex: 1;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus {
-            border-color: #e0576e;
-            outline: none;
-        }
-        
-        .terms-checkbox {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
-        
-        .terms-checkbox input {
-            margin-top: 3px;
-            margin-right: 10px;
-        }
-        
-        .terms-checkbox label {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .terms-checkbox a {
-            color: #e0576e;
-            text-decoration: none;
-        }
-        
-        .terms-checkbox a:hover {
-            text-decoration: underline;
-        }
-        
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            background-color: #e0576e;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .btn-submit:hover {
-            background-color: #c94d61;
-        }
-        
-        .auth-footer {
-            text-align: center;
-            margin-top: 25px;
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .auth-footer a {
-            color: #e0576e;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .auth-footer a:hover {
-            text-decoration: underline;
-        }
-        
-        .social-login {
-            margin-top: 30px;
-            text-align: center;
-        }
-        
-        .social-login p {
-            position: relative;
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 20px;
-        }
-        
-        .social-login p:before,
-        .social-login p:after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            width: 35%;
-            height: 1px;
-            background-color: #ddd;
-        }
-        
-        .social-login p:before {
-            left: 0;
-        }
-        
-        .social-login p:after {
-            right: 0;
-        }
-        
-        .social-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-        
-        .social-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .social-button:hover {
-            background-color: #eaeaea;
-        }
-        
-        .social-button i {
-            font-size: 18px;
-            color: #555;
-        }
-        
-        .welcome-bonus {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-            padding: 12px;
-            background-color: #f9e5e8;
-            border-radius: 6px;
-            color: #e0576e;
-        }
-        
-        .welcome-bonus i {
-            font-size: 20px;
-            margin-right: 10px;
-        }
-        
-        .welcome-bonus p {
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: #333;
-            color: white;
-            padding: 40px 20px;
-            margin-top: 50px;
-        }
-        
-        .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .footer-column {
-            width: 250px;
-            margin-bottom: 30px;
-        }
-        
-        .footer-column h3 {
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
-        
-        .footer-column ul {
-            list-style: none;
-        }
-        
-        .footer-column ul li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-column ul li a {
-            color: #ddd;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        
-        .footer-column ul li a:hover {
-            color: white;
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            margin-top: 20px;
-            border-top: 1px solid #555;
-            font-size: 14px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        /* Media Queries */
-        @media (max-width: 768px) {
-            .auth-container {
-                margin: 30px 20px;
-                padding: 20px;
-            }
-            
-            .form-row {
-                flex-direction: column;
-                gap: 0;
-            }
-        }
-    </style>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-auth-compat.js"></script>
+    <link rel="stylesheet" href="../auth.css">
+  </head>
+  <body>
     <!-- Header -->
     <header>
-        <a href="/">
-            <img src="/imgs/eera-removebg-preview.png" alt="Seera Logo" class="logo">
-        </a>
+      <a href="/">
+        <img
+          src="/imgs/eera-removebg-preview.png"
+          alt="Seera Logo"
+          class="logo"
+        />
+      </a>
     </header>
-    
+
     <!-- Registration Form -->
     <div class="auth-container">
-        <div class="auth-header">
-            <h1>Create an Account</h1>
-            <p>Join Seera for doorstep stitching services</p>
-        </div>
-        
-        <div class="welcome-bonus">
-            <i class="fas fa-gift"></i>
-            <p>Get 50 Seera Coins as a welcome bonus on sign up!</p>
-        </div>
-        
-        <form id="registerForm">
-            <div class="form-group">
-                <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+      <div class="auth-header">
+        <h1>Create an Account</h1>
+        <p>Join Seera for doorstep stitching services</p>
+      </div>
+
+      <div class="welcome-bonus">
+        <i class="fas fa-gift"></i>
+        <p>Get 50 Seera Coins as a welcome bonus on sign up!</p>
+      </div>
+
+      <!-- Phone number verification first -->
+      <div id="phoneVerificationContainer">
+        <form id="phoneNumberForm">
+          <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <div class="phone-input-container">
+              <span class="country-code">+91</span>
+              <input
+                type="tel"
+                id="phoneNumber"
+                name="phoneNumber"
+                required
+                placeholder="Enter your phone number"
+              />
             </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" required placeholder="Enter your email">
-                </div>
-                
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
-                </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required placeholder="Create a password">
-                </div>
-                
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
-                </div>
-            </div>
-            
-            <div class="terms-checkbox">
-                <input type="checkbox" id="terms" name="terms" required>
-                <label for="terms">
-                    I agree to Seera's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
-                </label>
-            </div>
-            
-            <button type="submit" class="btn-submit">Create Account</button>
+          </div>
+
+          <button type="submit" class="btn-submit" id="sendOtpBtn">
+            Send OTP
+          </button>
         </form>
-        
-        <div class="social-login">
-            <p>Or sign up with</p>
-            <div class="social-buttons">
-                <div class="social-button">
-                    <i class="fab fa-google"></i>
-                </div>
-                <div class="social-button">
-                    <i class="fab fa-facebook-f"></i>
-                </div>
-                <div class="social-button">
-                    <i class="fab fa-apple"></i>
-                </div>
-            </div>
+
+        <!-- This form will show after OTP is sent -->
+        <form id="otpVerificationForm" style="display: none">
+          <div class="form-group">
+            <label for="otpCode">Enter OTP</label>
+            <input
+              type="number"
+              id="otpCode"
+              name="otpCode"
+              required
+              placeholder="Enter 6-digit OTP"
+            />
+          </div>
+
+          <button type="submit" class="btn-submit" id="verifyOtpBtn">
+            Verify OTP
+          </button>
+          <p class="resend-otp">
+            Didn't receive OTP? <a href="#" id="resendOtp">Resend</a>
+          </p>
+        </form>
+      </div>
+
+      <!-- Registration form (shows after phone verification) -->
+      <form id="registerForm" style="display: none">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input
+            type="text"
+            id="fullName"
+            name="fullName"
+            required
+            placeholder="Enter your full name"
+          />
         </div>
-        
-        <div class="auth-footer">
-            Already have an account? <a href="/login">Sign In</a>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="Enter your email"
+          />
         </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            placeholder="Create a password"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            required
+            placeholder="Confirm your password"
+          />
+        </div>
+        <div class="form-group">
+          <label for="referal">Referal Code</label>
+          <input
+            type="text"
+            id="referal"
+            name="referal"
+            placeholder="Enter your Referal code (optional)"
+          />
+        </div>
+        <div class="terms-checkbox">
+          <input type="checkbox" id="terms" name="terms" required />
+          <label for="terms">
+            I agree to Seera's <a href="#">Terms of Service</a> and
+            <a href="#">Privacy Policy</a>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-submit">Create Account</button>
+      </form>
+
+      <div class="auth-footer">
+        Already have an account? <a href="/loginPage">Sign In</a>
+      </div>
+
+      <!-- Invisible reCAPTCHA container -->
+      <div id="recaptcha-container"></div>
     </div>
-    
+
     <!-- Footer -->
     <footer>
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>About Seera</h3>
-                <ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Our Team</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Press</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>For Customers</h3>
-                <ul>
-                    <li><a href="#">How It Works</a></li>
-                    <li><a href="#">Pricing</a></li>
-                    <li><a href="#">Reviews</a></li>
-                    <li><a href="#">FAQs</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Services</h3>
-                <ul>
-                    <li><a href="#">Blouse Stitching</a></li>
-                    <li><a href="#">Salwar Stitching</a></li>
-                    <li><a href="#">Designer Services</a></li>
-                    <li><a href="#">Saree Alterations</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Contact Us</h3>
-                <ul>
-                    <li><a href="#">Email: contact@seera.com</a></li>
-                    <li><a href="#">Phone: +91 9876543210</a></li>
-                    <li><a href="#">Feedback</a></li>
-                    <li><a href="#">Support</a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="copyright">
-            © 2025 Seera. All rights reserved.
-        </div>
+      <!-- Footer content -->
     </footer>
-    
-    <script>
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const name = document.getElementById('fullName').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const terms = document.getElementById('terms').checked;
-            
-            // Basic validation
-            if (password !== confirmPassword) {
-                alert('Passwords do not match');
-                return;
-            }
-            
-            if (!terms) {
-                alert('Please agree to the Terms of Service and Privacy Policy');
-                return;
-            }
-            
-            try {
-                const response = await fetch('/api/user/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ name, email, phone, password }),
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    // Redirect to home page or dashboard
-                    window.location.href = '/';
-                } else {
-                    alert(data.error || 'Registration failed. Please try again.');
-                }
-            } catch (error) {
-                console.error('Registration error:', error);
-                alert('An error occurred. Please try again later.');
-            }
-        });
-    </script>
-</body>
+
+    <script src="../register/script.js" type="module"></script>
+  </body>
 </html>

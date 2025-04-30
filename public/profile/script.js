@@ -160,7 +160,7 @@ addAddressForm.addEventListener("submit", async (e) => {
   }
 });
 
-// Copy referral code functionality
+// Update the copy referral code functionality to use the new API-provided code
 const copyCodeBtn = document.getElementById("copyCodeBtn");
 
 copyCodeBtn.addEventListener("click", () => {
@@ -180,7 +180,6 @@ copyCodeBtn.addEventListener("click", () => {
       alert("Failed to copy referral code");
     });
 });
-
 // Social sharing functionality
 const shareOptions = document.querySelectorAll(".share-option");
 
@@ -188,7 +187,7 @@ shareOptions.forEach((option) => {
   option.addEventListener("click", () => {
     const referralCode = document.getElementById("referralCode").textContent;
     const shareMessage = `Join Seera and get 50 coins on signup! Use my referral code: ${referralCode}`;
-    const shareUrl = "https://seera.com/register?ref=" + referralCode;
+    const shareUrl = "https://seera.com/register?referral=" + referralCode;
 
     if (option.title === "WhatsApp") {
       window.open(
@@ -256,22 +255,62 @@ async function loadUserData() {
           "<p>No addresses saved yet.</p>";
       }
 
-      // Generate referral code if not set
-      if (!localStorage.getItem("referralCode")) {
-        const referralCode =
-          "SEERA" +
-          user.name.substring(0, 2).toUpperCase() +
-          Math.floor(1000 + Math.random() * 9000);
-        localStorage.setItem("referralCode", referralCode);
-      }
-
-      document.getElementById("referralCode").textContent =
-        localStorage.getItem("referralCode") || "SEERA50";
+      // Update referral code - get from user data instead of localStorage
+      document.getElementById("referralCode").textContent = user.referralCode || "SEERA50";
+      
+      // Load referral history
+      loadReferralHistory();
     }
   } catch (error) {
     console.error("Error loading user data:", error);
     // Handle failed authentication
     window.location.href = "/loginPage";
+  }
+}
+
+// Function to load referral history
+async function loadReferralHistory() {
+  try {
+    const response = await fetch("/api/user/referrals");
+    const data = await response.json();
+    
+    const referralHistoryContainer = document.getElementById("referralHistory");
+    
+    if (data.referralHistory && data.referralHistory.length > 0) {
+      let historyHTML = '<div class="referral-history">';
+      
+      data.referralHistory.forEach(referral => {
+        const date = new Date(referral.date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        });
+        
+        historyHTML += `
+          <div class="referral-item">
+            <div class="referral-user">
+              <span class="referral-name">${referral.name}</span>
+              <span class="referral-email">${referral.email}</span>
+            </div>
+            <div class="referral-details">
+              <span class="referral-date">${date}</span>
+              <span class="referral-status ${referral.rewarded ? 'rewarded' : 'pending'}">
+                ${referral.rewarded ? 'Rewarded' : 'Pending'}
+              </span>
+            </div>
+          </div>
+        `;
+      });
+      
+      historyHTML += '</div>';
+      referralHistoryContainer.innerHTML = historyHTML;
+    } else {
+      referralHistoryContainer.innerHTML = '<p>No referrals yet. Start sharing your code to earn coins!</p>';
+    }
+  } catch (error) {
+    console.error("Error loading referral history:", error);
+    document.getElementById("referralHistory").innerHTML = 
+      '<p>Failed to load referral history. Please try again later.</p>';
   }
 }
 

@@ -12,9 +12,30 @@ const userRoutes = require("./routes/userRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
 const adminRoutes = require('./routes/adminRoutes');
 const dotenv = require("dotenv");
+const admin = require('firebase-admin');
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Initialize Firebase Admin SDK
+let serviceAccount;
+try {
+  // Check if the service account key is provided as a JSON string in env
+  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  } else {
+    // Otherwise try to load it from a file
+    serviceAccount = require('./firebase-service-account.json');
+  }
+
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+  console.log("Firebase Admin SDK initialized successfully");
+} catch (error) {
+  console.error("Error initializing Firebase Admin SDK:", error);
+  process.exit(1); // Exit if Firebase Admin cannot be initialized
+}
 
 // Connect to MongoDB
 mongoose
@@ -37,6 +58,12 @@ app.use(
     cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }, // 7 days
   })
 );
+
+// Make Firebase Admin available to routes
+app.use((req, res, next) => {
+  req.firebaseAdmin = admin;
+  next();
+});
 
 // Routes
 app.use("/api/cart", cartRoutes);
@@ -76,9 +103,11 @@ app.get("/auth/status", (req, res) => {
     res.json({ loggedIn: false });
   }
 });
+
 app.get("/profile", (req, res) => {
   res.sendFile(__dirname + "/public/profile/index.html");
 });
+
 app.get("/orderDetails/:orderId", async (req, res) => {
   const orderdetails = await Order.findOne({ orderNumber: req.params.orderId });
   if (orderdetails) {
@@ -86,7 +115,8 @@ app.get("/orderDetails/:orderId", async (req, res) => {
   } else {
     res.status(404).json({ message: "Order not found" });
   }
-})
+});
+
 app.get("/paynow/:orderId", async (req, res) => {
   const orderdetails = await Order.findOne({ orderNumber: req.params.orderId });
   let total = orderdetails.total;
@@ -113,6 +143,7 @@ app.get("/paynow/:orderId", async (req, res) => {
     key: RAZORPAY_KEY_ID, // Send the key for Razorpay SDK
   });
 });
+
 const crypto = require("crypto");
 
 app.post("/payment/verify", async (req, res) => {
@@ -143,25 +174,29 @@ app.post("/payment/verify", async (req, res) => {
     return res.status(400).json({ success: false, message: "Invalid signature" });
   }
 });
+
 app.get("/orders", async (req, res) => {
   if (req.session && req.session.userId) {
-    let orders=await Order.find({userId:req.session.userId})
-  res.json({orders})
+    let orders = await Order.find({ userId: req.session.userId });
+    res.json({ orders });
   } else {
     res.redirect("/loginPage");
   }
-  
-})
-app.get("/myOrders", async (req, res) => {
-  res.sendFile(__dirname + "/public/myOrders/index.html");
-})
-app.get('/admin', (req, res) => {
-
-    res.sendFile(__dirname + '/public/admin/index.html');
-  
 });
 
+app.get("/myOrders", async (req, res) => {
+  res.sendFile(__dirname + "/public/myOrders/index.html");
+});
 
+app.get('/admin', (req, res) => {
+  res.sendFile(__dirname + '/public/admin/index.html');
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
+});
 
 // Start server
 app.listen(PORT, () => {

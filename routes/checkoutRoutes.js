@@ -98,12 +98,47 @@ router.post('/', async (req, res) => {
     // Clear the cart
     cart.items = [];
     await cart.save();
-   
+    // Process referral reward
+    await processReferralReward(req.session.userId);
     res.json({ success: true, orderId: orderNumber });
   } catch (error) {
     console.error('Error processing checkout:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
+async function processReferralReward(userId) {
+  try {
+    // Find the user who placed the order
+    const user = await User.findById(userId);
+    
+    if (!user) return;
+    
+    // Check if this user was referred by someone
+    if (user.referredBy) {
+      // Find the referring user
+      const referrer = await User.findById(user.referredBy);
+      
+      if (!referrer) return;
+      
+      // Find the referral in the referrer's list
+      const referralIndex = referrer.referrals.findIndex(
+        ref => ref.user.toString() === user._id.toString()
+      );
+      
+      if (referralIndex >= 0 && !referrer.referrals[referralIndex].rewarded) {
+        // Update the referral as rewarded
+        referrer.referrals[referralIndex].rewarded = true;
+        
+        // Award coins to referrer
+        referrer.coins += 50;
+        
+        await referrer.save();
+        
+        console.log(`Referral reward processed: ${referrer.name} received 50 coins for referral of ${user.name}`);
+      }
+    }
+  } catch (error) {
+    console.error('Error processing referral reward:', error);
+  }
+}
 module.exports = router;
