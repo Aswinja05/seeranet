@@ -45,7 +45,6 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true
   },
   addresses: [addressSchema],
   // Referral system fields

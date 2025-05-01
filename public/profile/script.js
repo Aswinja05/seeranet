@@ -90,13 +90,13 @@ editProfileForm.addEventListener("submit", async (e) => {
       // Hide edit form
       editProfileSection.style.display = "none";
 
-      alert("Profile updated successfully!");
+      alertBox("Profile updated successfully!", "success", 3000);
     } else {
-      alert(data.error || "Failed to update profile. Please try again.");
+      alertBox(data.error || "Failed to update profile. Please try again.", "error", 3000);
     }
   } catch (error) {
     console.error("Update profile error:", error);
-    alert("An error occurred. Please try again later.");
+    alertBox("An error occurred. Please try again later.", "error", 3000);
   }
 });
 
@@ -150,13 +150,13 @@ addAddressForm.addEventListener("submit", async (e) => {
       addAddressForm.reset();
       addAddressSection.style.display = "none";
 
-      alert("Address added successfully!");
+      alertBox("Address added successfully!", "success", 3000);
     } else {
-      alert(data.error || "Failed to add address. Please try again.");
+      alertBox(data.error || "Failed to add address. Please try again.", "error", 3000);
     }
   } catch (error) {
     console.error("Add address error:", error);
-    alert("An error occurred. Please try again later.");
+    alertBox("An error occurred. Please try again later.", "error", 3000);
   }
 });
 
@@ -177,7 +177,7 @@ copyCodeBtn.addEventListener("click", () => {
     })
     .catch((err) => {
       console.error("Could not copy text: ", err);
-      alert("Failed to copy referral code");
+      alertBox("Failed to copy referral code","error", 3000);
     });
 });
 // Social sharing functionality
@@ -395,13 +395,13 @@ async function deleteAddress(index) {
 
     if (data.success) {
       loadUserData(); // Reload user data
-      alert("Address deleted successfully!");
+      alertBox("Address deleted successfully!", "success", 3000);
     } else {
-      alert(data.error || "Failed to delete address. Please try again.");
+      alertBox(data.error || "Failed to delete address. Please try again.", "error", 3000);
     }
   } catch (error) {
     console.error("Delete address error:", error);
-    alert("An error occurred. Please try again later.");
+    alertBox("An error occurred. Please try again later.", "error", 3000);
   }
 }
 
@@ -506,11 +506,11 @@ document.getElementById("logoutBtn").addEventListener("click", async (e) => {
     if (data.success) {
       window.location.href = "/loginPage";
     } else {
-      alert("Failed to logout. Please try again.");
+      alertBox("Failed to logout. Please try again.", "error", 3000);
     }
   } catch (error) {
     console.error("Logout error:", error);
-    alert("An error occurred. Please try again later.");
+    alertBox("An error occurred. Please try again later.", "error", 3000);
   }
 });
 
@@ -519,3 +519,115 @@ window.addEventListener("DOMContentLoaded", () => {
   loadUserData();
   loadOrders();
 });
+function alertBox(text, type = "info", duration = 3000) {
+  // Remove any existing alert box
+  const existingAlert = document.querySelector('.seera-alert-box');
+  if (existingAlert) {
+    existingAlert.remove();
+  }
+
+  // Create alert box container
+  const alertBox = document.createElement('div');
+  alertBox.className = 'seera-alert-box';
+  
+  // Determine icon and color based on type
+  let icon, backgroundColor, borderColor;
+  
+  switch(type) {
+    case "success":
+      icon = '<i class="fas fa-check-circle"></i>';
+      backgroundColor = '#e8f5e9';
+      borderColor = '#4caf50';
+      break;
+    case "error":
+      icon = '<i class="fas fa-times-circle"></i>';
+      backgroundColor = '#ffebee';
+      borderColor = '#e53935';
+      break;
+    case "warning":
+      icon = '<i class="fas fa-exclamation-triangle"></i>';
+      backgroundColor = '#fff8e1';
+      borderColor = '#ffc107';
+      break;
+    case "info":
+    default:
+      icon = '<i class="fas fa-info-circle"></i>';
+      backgroundColor = '#e3f2fd';
+      borderColor = '#2196f3';
+      break;
+  }
+  
+  // Set styles
+  alertBox.style.cssText = `
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: ${backgroundColor};
+    border-left: 4px solid ${borderColor};
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 16px;
+    z-index: 10000;
+    min-width: 280px;
+    max-width: 90%;
+    display: flex;
+    align-items: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    animation: slideDown 0.3s ease-out forwards;
+  `;
+  
+  // Create content
+  alertBox.innerHTML = `
+    <div style="color: ${borderColor}; font-size: 24px; margin-right: 14px;">${icon}</div>
+    <div style="flex-grow: 1;">
+      <div style="font-size: 14px; color: #333; line-height: 1.4;">${text}</div>
+    </div>
+    <div class="seera-alert-close" style="cursor: pointer; color: #777; font-size: 18px; margin-left: 10px;">
+      <i class="fas fa-times"></i>
+    </div>
+  `;
+  
+  // Add to DOM
+  document.body.appendChild(alertBox);
+  
+  // Add CSS animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideDown {
+      from { opacity: 0; transform: translate(-50%, -20px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Add close functionality
+  const closeBtn = alertBox.querySelector('.seera-alert-close');
+  closeBtn.addEventListener('click', () => {
+    alertBox.style.animation = 'fadeOut 0.3s forwards';
+    setTimeout(() => {
+      alertBox.remove();
+    }, 300);
+  });
+  
+  // Auto close if duration is provided
+  if (duration > 0) {
+    setTimeout(() => {
+      if (alertBox.parentNode) {
+        alertBox.style.animation = 'fadeOut 0.3s forwards';
+        setTimeout(() => {
+          if (alertBox.parentNode) {
+            alertBox.remove();
+          }
+        }, 300);
+      }
+    }, duration);
+  }
+  
+  // Return the alert box element in case further manipulation is needed
+  return alertBox;
+}

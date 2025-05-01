@@ -143,16 +143,18 @@ function showOrderDetails(order) {
   // Define steps
   const steps = [
     { name: "Placed", icon: "fa-check" },
-    { name: "Tailoring", icon: "fa-cog" },
+    { name: "Picked Up", icon: "fa-archive" },
+    { name: "Stitching", icon: "fa-cog" },
     { name: "Dispatched", icon: "fa-truck" },
     { name: "Delivered", icon: "fa-home" },
   ];
 
   // Determine current step based on order status
   let currentStepIndex = 0;
-  if (order.status === "tailoring") currentStepIndex = 1;
-  if (order.status === "Dispatched") currentStepIndex = 2;
-  if (order.status === "Delivered") currentStepIndex = 3;
+  if (order.status === "Picked Up") currentStepIndex = 1;
+  if (order.status === "Stitching") currentStepIndex = 2;
+  if (order.status === "Out for Delivery") currentStepIndex = 3;
+  if (order.status === "Delivered") currentStepIndex = 4;
 
   // Create steps
   steps.forEach((step, index) => {

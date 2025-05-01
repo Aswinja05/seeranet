@@ -114,7 +114,7 @@ document
  const phoneNumber =
    "+91" + document.getElementById("phoneNumber").value.trim();
  if (!phoneNumber || phoneNumber.length < 10) {
-   alert("Please enter a valid phone number");
+   alertBox("Please enter a valid phone number", "info", 3000);
    return;
  }
 
@@ -134,7 +134,7 @@ document
      "block";
  } catch (error) {
    console.error("Error sending OTP:", error);
-   alert("Error sending OTP: " + error.message);
+   alertBox("Error sending OTP: " + error.message,"error", 3000);
    document.getElementById("sendOtpBtn").textContent = "Send OTP";
    document.getElementById("sendOtpBtn").disabled = false;
 
@@ -157,7 +157,7 @@ document
 
  const otpCode = document.getElementById("otpCode").value.trim();
  if (!otpCode || otpCode.length !== 6) {
-   alert("Please enter a valid 6-digit OTP");
+   alertBox("Please enter a valid 6-digit OTP", "info", 3000);
    return;
  }
 
@@ -187,8 +187,8 @@ document
 
    if (checkData.exists) {
      // User exists, redirect to login
-     alert(
-       "Account already exists with this phone number. Redirecting to login..."
+     alertBox(
+       "Account already exists with this phone number. Redirecting to login...","warning", 3000
      );
      window.location.href = "/loginPage";
    } else {
@@ -205,7 +205,7 @@ document
    }
  } catch (error) {
    console.error("Error verifying OTP:", error);
-   alert("Error verifying OTP: " + error.message);
+   alertBox("Error verifying OTP: " + error.message, "error", 3000);
    document.getElementById("verifyOtpBtn").textContent = "Verify OTP";
    document.getElementById("verifyOtpBtn").disabled = false;
  }
@@ -235,10 +235,10 @@ document
      phoneNumber,
      window.recaptchaVerifier
    );
-   alert("OTP sent again!");
+   alertBox("OTP sent again!", "info", 3000);
  } catch (error) {
    console.error("Error resending OTP:", error);
-   alert("Error resending OTP: " + error.message);
+   alertBox("Error resending OTP: " + error.message,"error", 3000);
  }
 });
 
@@ -250,20 +250,13 @@ document
 
  const name = document.getElementById("fullName").value;
  const email = document.getElementById("email").value;
- const password = document.getElementById("password").value;
- const confirmPassword =
-   document.getElementById("confirmPassword").value;
  const referalCode = document.getElementById("referal").value;
  const terms = document.getElementById("terms").checked;
 
- // Basic validation
- if (password !== confirmPassword) {
-   alert("Passwords do not match");
-   return;
- }
+ 
 
  if (!terms) {
-   alert("Please agree to the Terms of Service and Privacy Policy");
+   alertBox("Please agree to the Terms of Service and Privacy Policy",  "info", 3000);
    return;
  }
 
@@ -277,7 +270,6 @@ document
        name,
        email,
        phone: verifiedPhoneNumber,
-       password,
        referralCode: referalCode, // Corrected variable name here
        firebaseToken: firebaseIdToken,
      }),
@@ -286,14 +278,126 @@ document
    const data = await response.json();
 
    if (data.success) {
-     alert("Registration successful! Welcome to Seera.");
+     alertBox("Registration successful! Welcome to Seera.", "success", 3000);
      // Redirect to home page or dashboard
      window.location.href = "/";
    } else {
-     alert(data.error || "Registration failed. Please try again.");
+     alertBox(data.error || "Registration failed. Please try again.", "error", 3000);
    }
  } catch (error) {
    console.error("Registration error:", error);
-   alert("An error occurred. Please try again later.");
+   alertBox("An error occurred. Please try again later.", "error", 3000);
  }
 });
+function alertBox(text, type = "info", duration = 3000) {
+  // Remove any existing alert box
+  const existingAlert = document.querySelector('.seera-alert-box');
+  if (existingAlert) {
+    existingAlert.remove();
+  }
+
+  // Create alert box container
+  const alertBox = document.createElement('div');
+  alertBox.className = 'seera-alert-box';
+  
+  // Determine icon and color based on type
+  let icon, backgroundColor, borderColor;
+  
+  switch(type) {
+    case "success":
+      icon = '<i class="fas fa-check-circle"></i>';
+      backgroundColor = '#e8f5e9';
+      borderColor = '#4caf50';
+      break;
+    case "error":
+      icon = '<i class="fas fa-times-circle"></i>';
+      backgroundColor = '#ffebee';
+      borderColor = '#e53935';
+      break;
+    case "warning":
+      icon = '<i class="fas fa-exclamation-triangle"></i>';
+      backgroundColor = '#fff8e1';
+      borderColor = '#ffc107';
+      break;
+    case "info":
+    default:
+      icon = '<i class="fas fa-info-circle"></i>';
+      backgroundColor = '#e3f2fd';
+      borderColor = '#2196f3';
+      break;
+  }
+  
+  // Set styles
+  alertBox.style.cssText = `
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: ${backgroundColor};
+    border-left: 4px solid ${borderColor};
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 16px;
+    z-index: 10000;
+    min-width: 280px;
+    max-width: 90%;
+    display: flex;
+    align-items: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    animation: slideDown 0.3s ease-out forwards;
+  `;
+  
+  // Create content
+  alertBox.innerHTML = `
+    <div style="color: ${borderColor}; font-size: 24px; margin-right: 14px;">${icon}</div>
+    <div style="flex-grow: 1;">
+      <div style="font-size: 14px; color: #333; line-height: 1.4;">${text}</div>
+    </div>
+    <div class="seera-alert-close" style="cursor: pointer; color: #777; font-size: 18px; margin-left: 10px;">
+      <i class="fas fa-times"></i>
+    </div>
+  `;
+  
+  // Add to DOM
+  document.body.appendChild(alertBox);
+  
+  // Add CSS animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideDown {
+      from { opacity: 0; transform: translate(-50%, -20px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Add close functionality
+  const closeBtn = alertBox.querySelector('.seera-alert-close');
+  closeBtn.addEventListener('click', () => {
+    alertBox.style.animation = 'fadeOut 0.3s forwards';
+    setTimeout(() => {
+      alertBox.remove();
+    }, 300);
+  });
+  
+  // Auto close if duration is provided
+  if (duration > 0) {
+    setTimeout(() => {
+      if (alertBox.parentNode) {
+        alertBox.style.animation = 'fadeOut 0.3s forwards';
+        setTimeout(() => {
+          if (alertBox.parentNode) {
+            alertBox.remove();
+          }
+        }, 300);
+      }
+    }, duration);
+  }
+  
+  // Return the alert box element in case further manipulation is needed
+  return alertBox;
+}

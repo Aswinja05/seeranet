@@ -3,6 +3,10 @@
 const mongoose = require('mongoose');
 
 const orderItemSchema = new mongoose.Schema({
+  itemId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'CartItem'
+  },
   serviceName: {
     type: String,
     required: true
@@ -13,8 +17,12 @@ const orderItemSchema = new mongoose.Schema({
   },
   lining: String,
   design: String,
+  designPrice: Number,
   measurement: String,
+  measurementPrice: Number,
   referenceImage: String,
+  description: String,
+  basePrice: Number,
   price: {
     type: Number,
     required: true
@@ -72,7 +80,7 @@ const orderSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ['Placed', 'Processing', 'Ready', 'Out for Delivery', 'Delivered', 'Cancelled'],
+    enum: ['Placed', 'Picked Up', 'Stitching', 'Out for Delivery', 'Delivered', 'Cancelled'],
     default: 'Placed'
   },
   statusUpdates: [{

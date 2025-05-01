@@ -49,6 +49,7 @@ router.post('/add', async (req, res) => {
       measurementPrice,
       referenceImage,
       basePrice,
+      description,
       image
     } = req.body;
     
@@ -64,6 +65,7 @@ router.post('/add', async (req, res) => {
       measurementPrice,
       referenceImage,
       basePrice,
+      description,
       image,
       totalPrice: basePrice + (designPrice || 0) + (measurementPrice || 0) + (lining === 'With Lining' ? 49 : 0)
     });

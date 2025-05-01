@@ -51,7 +51,8 @@ router.post('/add-to-cart', upload.single('referenceImage'), async (req, res) =>
       lining,
       design,
       measurement,
-      basePrice
+      basePrice,
+      description
     } = req.body;
     console.log(req.body)
     // Calculate prices based on selections
@@ -87,6 +88,7 @@ router.post('/add-to-cart', upload.single('referenceImage'), async (req, res) =>
       measurementPrice,
       referenceImage,
       basePrice: parseFloat(basePrice) || 249,
+      description,
       image
     });
     

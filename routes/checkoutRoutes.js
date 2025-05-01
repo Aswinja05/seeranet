@@ -32,7 +32,6 @@ router.post('/', async (req, res) => {
    
     // Find the user's cart
     const cart = await Cart.findOne({ userId }).populate('items');
-   
     if (!cart || !cart.items || cart.items.length === 0) {
       return res.status(400).json({ error: 'Cart is empty' });
     }
@@ -73,10 +72,18 @@ router.post('/', async (req, res) => {
         itemId: item._id,
         serviceName: item.serviceName,
         serviceType: item.serviceType,
-        quantity: item.quantity,
-        price: item.totalPrice
+        lining: item.lining,
+        design: item.design,
+        designPrice: item.designPrice,
+        measurement: item.measurement,
+        measurementPrice: item.measurementPrice,
+        referenceImage: item.referenceImage,
+        basePrice: item.basePrice,
+        price: item.totalPrice,
+        description: item.description,
+        quantity: item.quantity || 1,
+        image: item.image
       })),
-      // Change this from 'address' to 'deliveryAddress' to match the Order schema
       deliveryAddress: {
         type: selectedAddress.type,
         street: selectedAddress.street,
@@ -88,7 +95,7 @@ router.post('/', async (req, res) => {
       subtotal: cart.subtotal,
       deliveryCharge: cart.deliveryCharge,
       discount: cart.discount,
-      coinDiscount: coinDiscount, // Make sure this field exists in your Order schema
+      coinDiscount: coinDiscount,
       total: cart.total - coinDiscount,
       status: 'Placed'
     });
@@ -130,7 +137,7 @@ async function processReferralReward(userId) {
         referrer.referrals[referralIndex].rewarded = true;
         
         // Award coins to referrer
-        referrer.coins += 50;
+        referrer.coins += 10;
         
         await referrer.save();
         

@@ -62,7 +62,7 @@ router.post('/phoneLogin', async (req, res) => {
 // Register with phone verification
 router.post('/registerWithPhone', async (req, res) => {
   try {
-    const { name, email, phone, password, referralCode, firebaseToken } = req.body;
+    const { name, email, phone, referralCode, firebaseToken } = req.body;
     
     // Verify Firebase token
     const decodedToken = await admin.auth().verifyIdToken(firebaseToken);
@@ -95,15 +95,11 @@ router.post('/registerWithPhone', async (req, res) => {
       }
     }
     
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-    
     // Create new user
     const user = new User({
       name,
       email,
       phone,
-      password: hashedPassword,
       referredBy,
       coins: 50 // Welcome bonus coins
     });
@@ -487,38 +483,38 @@ router.put('/profile', async (req, res) => {
 });
 
 // Update password
-router.put('/updatePassword', async (req, res) => {
-  try {
-    if (!req.session.userId) {
-      return res.status(401).json({ error: 'User not authenticated' });
-    }
+// router.put('/updatePassword', async (req, res) => {
+//   try {
+//     if (!req.session.userId) {
+//       return res.status(401).json({ error: 'User not authenticated' });
+//     }
 
-    const userId = req.session.userId;
-    const { currentPassword, newPassword } = req.body;
+//     const userId = req.session.userId;
+//     const { currentPassword, newPassword } = req.body;
     
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res.status(404).json({ error: 'User not found' });
+//     }
     
-    // Verify current password
-    const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: 'Current password is incorrect' });
-    }
+//     // Verify current password
+//     const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+//     if (!isPasswordValid) {
+//       return res.status(401).json({ error: 'Current password is incorrect' });
+//     }
     
-    // Hash new password
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedPassword;
+//     // Hash new password
+//     const hashedPassword = await bcrypt.hash(newPassword, 10);
+//     user.password = hashedPassword;
     
-    await user.save();
+//     await user.save();
     
-    res.json({ success: true, message: 'Password updated successfully' });
-  } catch (error) {
-    console.error('Error updating password:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+//     res.json({ success: true, message: 'Password updated successfully' });
+//   } catch (error) {
+//     console.error('Error updating password:', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
 
 // Get user coins
 router.get('/coins', async (req, res) => {

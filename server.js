@@ -20,14 +20,6 @@ const PORT = process.env.PORT || 5000;
 // Initialize Firebase Admin SDK
 let serviceAccount;
 try {
-  // // Check if the service account key is provided as a JSON string in env
-  // if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-  //   serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-  // } else {
-  //   // Otherwise try to load it from a file
-  //   serviceAccount = require('./firebase-service-account.json');
-  //   console.log(serviceAccount)
-  // }
 
   admin.initializeApp({
     credential: admin.credential.cert({

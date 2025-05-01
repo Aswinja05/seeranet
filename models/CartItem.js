@@ -40,6 +40,9 @@ const cartItemSchema = new mongoose.Schema({
   referenceImage: {
     type: String
   },
+  description: {
+    type: String
+  },
   basePrice: {
     type: Number,
     required: true

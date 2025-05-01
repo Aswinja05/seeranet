@@ -244,6 +244,30 @@ header {
   color: white;
 }
 
+/* Description */
+.upload-desc{
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-desc:hover {
+  border-color: #e0576e;
+  background-color: #fdf5f6;
+}
+
+.upload-desc textarea{
+  height: 100%;
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
 /* File Upload */
 .upload-box {
   border: 2px dashed #ddd;
@@ -299,7 +323,7 @@ header {
 .total-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   font-size: 14px;
   color: #666;
 }
@@ -318,11 +342,10 @@ header {
   padding: 20px 30px;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
-
 /* Button Styles */
 .button-group {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 20px;
 }
 
@@ -334,31 +357,18 @@ header {
   cursor: pointer;
   border: none;
   transition: background-color 0.2s;
+  width: 100%; /* Make button take full width */
+  max-width: 300px; /* Limit maximum width */
 }
 
 .btn-primary {
   background-color: #e0576e;
   color: white;
-  flex: 1;
-  margin-right: 10px;
 }
 
 .btn-primary:hover {
   background-color: #d04b61;
 }
-
-.btn-secondary {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  color: #333;
-  flex: 1;
-  margin-left: 10px;
-}
-
-.btn-secondary:hover {
-  background-color: #f0f0f0;
-}
-
 /* Bottom Navigation (Mobile) */
 .bottom-nav {
   position: fixed;
@@ -409,7 +419,11 @@ header {
   align-items: center;
   justify-content: center;
 }
-
+.btn-primary,
+  .btn-secondary {
+    margin: 0;
+    margin-bottom: 54px;
+  } 
 /* Media Queries */
 @media (max-width: 768px) {
   .options-grid,
@@ -417,15 +431,11 @@ header {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .button-group {
+  /* .button-group {
     flex-direction: column;
-  }
+  } */
 
-  .btn-primary,
-  .btn-secondary {
-    margin: 0;
-    margin-bottom: 10px;
-  }
+  
 }
 
 @media (max-width: 480px) {

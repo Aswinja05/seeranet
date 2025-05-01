@@ -27,7 +27,7 @@
         </div>
         <a href="/cart"><i class="fas fa-shopping-cart"></i></a>
         <a href="/loginPage" id="logoutBtn"
-          ><i class="fas fa-sign-out-alt"></i
+          >Logout</i
         ></a>
       </div>
     </header>
@@ -50,7 +50,6 @@
 
       <div class="profile-tabs">
         <div class="profile-tab active" data-tab="profile">My Profile</div>
-        <div class="profile-tab" data-tab="orders">My Orders</div>
         <div class="profile-tab" data-tab="refer">Refer & Earn</div>
       </div>
 
@@ -172,7 +171,7 @@
         <div class="refer-card">
           <h2>Refer a Friend & Earn Coins</h2>
           <p>
-            Share your referral code with friends and earn 50 coins when they
+            Share your referral code with friends and earn coins when they
             sign up!
           </p>
           <div class="referral-code">
@@ -222,49 +221,69 @@
     <footer>
       <div class="footer-content">
         <div class="footer-column">
-          <h3>About Seera</h3>
-          <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Our Team</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Press</a></li>
-          </ul>
-        </div>
 
-        <div class="footer-column">
-          <h3>For Customers</h3>
-          <ul>
-            <li><a href="#">How It Works</a></li>
-            <li><a href="#">Pricing</a></li>
-            <li><a href="#">Reviews</a></li>
-            <li><a href="#">FAQs</a></li>
-          </ul>
-        </div>
+          <div class="footer-column">
+            <h3>Social Media</h3>
+            <ul>
+              <li>
+                <a href="https://www.instagram.com/seera.style" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-instagram"></i> Instagram
+                </a>
+              </li>
+              <li>
+                <a href="https://www.facebook.com/share/1XvwvSWocn/" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-facebook-f"></i> Facebook
+                </a>
+              </li>
+            </ul>
+          </div>
+          
 
         <div class="footer-column">
           <h3>Services</h3>
           <ul>
-            <li><a href="#">Blouse Stitching</a></li>
-            <li><a href="#">Salwar Stitching</a></li>
-            <li><a href="#">Designer Services</a></li>
-            <li><a href="#">Saree Alterations</a></li>
+            <li><a href="/booking/blouse">Blouse Stitching</a></li>
+            <li><a href="/">Salwar Stitching</a></li>
+            <li><a href="/">Designer Services</a></li>
+            <li><a href="/">Saree Alterations</a></li>
           </ul>
         </div>
 
         <div class="footer-column">
           <h3>Contact Us</h3>
           <ul>
-            <li><a href="#">Email: contact@seera.com</a></li>
-            <li><a href="#">Phone: +91 9876543210</a></li>
-            <li><a href="#">Feedback</a></li>
-            <li><a href="#">Support</a></li>
+            <li><a href="/">Email: seeranet.info@gmail.com</a></li>
+            <li><a href="/">Phone: +91 9902227821</a></li>
           </ul>
         </div>
       </div>
 
       <div class="copyright">© 2025 Seera. All rights reserved.</div>
     </footer>
+    <!-- Bottom Navigation (Mobile) -->
+    <div class="bottom-nav">
+      <div class="bottom-nav-menu ">
+        <div class="bottom-nav-item " onclick="window.location.href='/';">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </div>
 
+        <div class="bottom-nav-item" onclick="window.location.href='/myOrders';">
+          <i class="fas fa-calendar-check"></i>
+          <span>My Orders</span>
+        </div>
+
+        <div class="bottom-nav-item"  onclick="window.location.href='/cart';">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Cart</span>
+        </div>
+
+        <div class="bottom-nav-item active" onclick="window.location.href='/profile';">
+          <i class="fas fa-user"></i>
+          <span>Account</span>
+        </div>
+      </div>
+    </div>
     
   </body>
   <script src="../profile/script.js" defer></script>

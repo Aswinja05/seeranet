@@ -152,6 +152,7 @@ async function fetchOrderDetails(orderId) {
   }
 }
 
+// Function to show order details modal in the admin dashboard
 function showOrderDetailsModal(order) {
   // Create modal if it doesn't exist
   let modal = document.getElementById('orderDetailsModal');
@@ -172,7 +173,7 @@ function showOrderDetailsModal(order) {
       year: 'numeric', month: 'short', day: 'numeric' 
     }) : 'Not set';
 
-  // Create items HTML
+  // Create items HTML - Enhanced with more details
   const itemsHtml = order.items.map(item => `
     <div class="order-item">
       <div class="item-header">
@@ -180,10 +181,12 @@ function showOrderDetailsModal(order) {
         <div class="item-price">₹${item.price.toFixed(2)} × ${item.quantity}</div>
       </div>
       <div class="item-details">
-        ${item.design ? `<div><strong>Design:</strong> ${item.design}</div>` : ''}
-        ${item.lining ? `<div><strong>Lining:</strong> ${item.lining}</div>` : ''}
-        ${item.measurement ? `<div><strong>Measurement:</strong> ${item.measurement}</div>` : ''}
-        ${item.referenceImage ? `<div class="ref-image"><strong>Reference Image:</strong> <img src="${item.referenceImage}" alt="Reference"></div>` : ''}
+        ${item.design ? `<div><strong>Design:</strong> ${item.design} ${item.designPrice ? `(+₹${item.designPrice})` : ''}</div>` : ''}
+        ${item.lining ? `<div><strong>Lining:</strong> ${item.lining} ${item.lining === 'With Lining' ? '(+₹49)' : ''}</div>` : ''}
+        ${item.measurement ? `<div><strong>Measurement:</strong> ${item.measurement} ${item.measurementPrice ? `(+₹${item.measurementPrice})` : ''}</div>` : ''}
+        ${item.basePrice ? `<div><strong>Base Price:</strong> ₹${item.basePrice}</div>` : ''}
+        ${item.description ? `<div><strong>Description:</strong> ${item.description}</div>` : ''}
+        ${item.referenceImage ? `<div class="ref-image"><strong>Reference Image:</strong> <img src="${item.referenceImage}" alt="Reference" width="200"></div>` : ''}
       </div>
     </div>
   `).join('');
@@ -292,6 +295,12 @@ function showOrderDetailsModal(order) {
                 <span>Discount</span>
                 <span>-₹${order.discount.toFixed(2)}</span>
               </div>
+              ${order.coinDiscount > 0 ? `
+              <div class="total-row">
+                <span>Coins Redeemed</span>
+                <span>-₹${order.coinDiscount.toFixed(2)}</span>
+              </div>
+              ` : ''}
               <div class="total-row grand-total">
                 <span>Total</span>
                 <span>₹${order.total.toFixed(2)}</span>
@@ -299,14 +308,13 @@ function showOrderDetailsModal(order) {
             </div>
           </div>
         </div>
-
         <div class="order-actions">
           <h3>Update Status</h3>
           <div class="status-update-controls">
             <select id="statusSelect" class="status-select">
               <option value="Placed">Placed</option>
-              <option value="Processing">Processing</option>
-              <option value="Ready">Ready</option>
+              <option value="Picked Up">Picked Up</option>
+              <option value="Stitching">Stitching</option>
               <option value="Out for Delivery">Out for Delivery</option>
               <option value="Delivered">Delivered</option>
               <option value="Cancelled">Cancelled</option>
@@ -356,6 +364,7 @@ function showOrderDetailsModal(order) {
   if (updateStatusBtn) {
     updateStatusBtn.addEventListener('click', () => {
       const newStatus = document.getElementById('statusSelect').value;
+      console.log(newStatus);
       updateOrderStatus(order._id, newStatus);
     });
   }
