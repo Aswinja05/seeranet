@@ -82,24 +82,6 @@
 
 
 
-      <button onclick="loginAdmin()">LoginAdmin</button>
-      <script>
-        function loginAdmin() {
-        fetch('https://z8ccm2v1-5000.inc1.devtunnels.ms/api/user/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: "aswinja05@gmail.com",
-                password: "1"
-            })
-        })
-        .then(response => response.json())
-        .then(data => console.log('Success:', data))
-        .catch(error => console.error('Error:', error));
-    }
-      </script>
 
 
 
