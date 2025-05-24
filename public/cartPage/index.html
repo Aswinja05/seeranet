@@ -15,11 +15,11 @@
     <!-- Header -->
     <header>
       <a href="/">
-      <img
-        src="/imgs/eera-removebg-preview.png"
-        alt="Seera Logo"
-        class="logo"
-      />
+        <img
+          src="/imgs/eera-removebg-preview.png"
+          alt="Seera Logo"
+          class="logo"
+        />
       </a>
       <div class="header-icons">
         <a href="#"><i class="fas fa-search"></i></a>
@@ -51,6 +51,127 @@
         <!-- Cart items will be loaded here dynamically -->
       </div>
 
+      <div class="address-section">
+        <h2 class="section-title">Delivery Address</h2>
+
+        <!-- Container for addresses list -->
+        <div
+          class="addresses-container"
+          id="addressesContainer"
+          style="display: none"
+        >
+          <div class="addresses-list" id="addressesList">
+            <!-- Addresses will be loaded here dynamically -->
+          </div>
+
+          <!-- Add New Address Button (shown only when addresses exist) -->
+          <div class="add-address-button">
+            <button
+              class="btn btn-outlined btn-add-address"
+              id="btnShowAddAddress"
+            >
+              <i class="fas fa-plus"></i> Add New Address
+            </button>
+          </div>
+        </div>
+
+        <!-- No addresses message (shown when no addresses exist) -->
+        <div class="no-addresses" id="noAddressesMessage" style="display: none">
+          <div class="empty-state">
+            <i class="fas fa-map-marker-alt"></i>
+            <p>You don't have any saved addresses yet.</p>
+            <button class="btn btn-primary" id="btnAddFirstAddress">
+              Add New Address
+            </button>
+          </div>
+        </div>
+
+        <!-- Address Form Container -->
+        <div
+          id="addressFormContainer"
+          class="form-container"
+          style="display: none"
+        >
+          <form id="addAddressForm">
+            <div class="form-header">
+              <h3>Add New Address</h3>
+              <button type="button" id="cancelAddressBtn" class="btn-close">
+                ×
+              </button>
+            </div>
+            <div class="form-group">
+              <label for="addressType">Address Type</label>
+              <select id="addressType" required>
+                <option value="Home">Home</option>
+                <option value="Work">Work</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="addressStreet">Street Address</label>
+              <input type="text" id="addressStreet" required />
+            </div>
+            <div class="form-group">
+              <label for="addressCity">City</label>
+              <input type="text" id="addressCity" required />
+            </div>
+            <div class="form-group">
+              <label for="addressState">State</label>
+              <input type="text" id="addressState" required />
+            </div>
+            <div class="form-group">
+              <label for="addressPincode">Pincode</label>
+              <input
+                type="text"
+                id="addressPincode"
+                required
+                pattern="[0-9]{6}"
+              />
+            </div>
+            <div class="form-group checkbox">
+              <input type="checkbox" id="isDefaultAddress" />
+              <label for="isDefaultAddress">Set as default address</label>
+            </div>
+            <div class="form-buttons">
+              <button type="submit" class="btn btn-primary">
+                Save Address
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Promo Code Section -->
+      <!-- <div class="promo-section">
+        <h2 class="section-title">Have a promo code?</h2>
+        <div class="promo-input">
+          <input type="text" placeholder="Enter promo code" />
+          <button class="btn btn-outlined">Apply</button>
+        </div>
+      </div> -->
+
+      <!-- Add this right after the delivery charge line in the cart summary section -->
+
+      <!-- Add this after the delivery method row -->
+      <div class="quick-delivery-toggle">
+        <div class="summary-label toggle-label">
+          <i class="fa-solid fa-truck-fast" style="color: #e0576e"></i>
+          <span style="margin: 0px 18px">One Day Delivery</span>
+          <span
+            class="quick-delivery-info"
+            style="font-size: 12px; color: #666; margin-left: 5px"
+          >
+            (Get it Tomorrow!)
+          </span>
+        </div>
+        <div class="summary-value">
+          <label class="switch" for="quickDeliveryToggle">
+            <input type="checkbox" id="quickDeliveryToggle" />
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+
       <!-- Summary Section -->
       <div class="summary-section">
         <h2 class="section-title">Order Summary</h2>
@@ -60,7 +181,7 @@
           <span id="subtotal">₹0</span>
         </div>
         <div class="summary-row">
-          <span>Delivery Charges</span>
+          <span>Pickup & Delivery Charges</span>
           <span id="deliveryCharge">₹0</span>
         </div>
         <div class="summary-row">
@@ -88,85 +209,6 @@
         </div>
       </div>
 
-      <!-- Promo Code Section -->
-      <div class="promo-section">
-        <h2 class="section-title">Have a promo code?</h2>
-        <div class="promo-input">
-          <input type="text" placeholder="Enter promo code" />
-          <button class="btn btn-outlined">Apply</button>
-        </div>
-      </div>
-
-      <div class="address-section">
-        <h2 class="section-title">Delivery Address</h2>
-        
-        <!-- Container for addresses list -->
-        <div class="addresses-container" id="addressesContainer" style="display: none">
-          <div class="addresses-list" id="addressesList">
-            <!-- Addresses will be loaded here dynamically -->
-          </div>
-          
-          <!-- Add New Address Button (shown only when addresses exist) -->
-          <div class="add-address-button">
-            <button class="btn btn-outlined btn-add-address" id="btnShowAddAddress">
-              <i class="fas fa-plus"></i> Add New Address
-            </button>
-          </div>
-        </div>
-        
-        <!-- No addresses message (shown when no addresses exist) -->
-        <div class="no-addresses" id="noAddressesMessage" style="display: none">
-          <div class="empty-state">
-            <i class="fas fa-map-marker-alt"></i>
-            <p>You don't have any saved addresses yet.</p>
-            <button class="btn btn-primary" id="btnAddFirstAddress">Add New Address</button>
-          </div>
-        </div>
-        
-        <!-- Address Form Container -->
-        <div id="addressFormContainer" class="form-container" style="display: none">
-          <form id="addAddressForm">
-            <div class="form-header">
-              <h3>Add New Address</h3>
-              <button type="button" id="cancelAddressBtn" class="btn-close">×</button>
-            </div>
-            <div class="form-group">
-              <label for="addressType">Address Type</label>
-              <select id="addressType" required>
-                <option value="Home">Home</option>
-                <option value="Work">Work</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="addressStreet">Street Address</label>
-              <input type="text" id="addressStreet" required />
-            </div>
-            <div class="form-group">
-              <label for="addressCity">City</label>
-              <input type="text" id="addressCity" required />
-            </div>
-            <div class="form-group">
-              <label for="addressState">State</label>
-              <input type="text" id="addressState" required />
-            </div>
-            <div class="form-group">
-              <label for="addressPincode">Pincode</label>
-              <input type="text" id="addressPincode" required pattern="[0-9]{6}" />
-            </div>
-            <div class="form-group checkbox">
-              <input type="checkbox" id="isDefaultAddress" />
-              <label for="isDefaultAddress">Set as default address</label>
-            </div>
-            <div class="form-buttons">
-              <button type="submit" class="btn btn-primary">Save Address</button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-
-      
       <!-- Payment Options -->
       <div class="payment-section">
         <h2 class="section-title">Payment Method</h2>
@@ -182,8 +224,6 @@
             <div class="payment-icon"><i class="fas fa-credit-card"></i></div>
             <div class="payment-name">Credit / Debit Card</div>
           </div>
-
-          
         </div>
       </div>
 
@@ -206,7 +246,10 @@
           <span>Home</span>
         </div>
 
-        <div class="bottom-nav-item" onclick="window.location.href='/myOrders';">
+        <div
+          class="bottom-nav-item"
+          onclick="window.location.href='/myOrders';"
+        >
           <i class="fas fa-calendar-check"></i>
           <span>My Orders</span>
         </div>

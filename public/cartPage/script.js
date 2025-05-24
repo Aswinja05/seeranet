@@ -56,11 +56,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
 // Function to hide the address form
 function hideAddressForm() {
   document.getElementById("addressFormContainer").style.display = "none";
   document.querySelector('.overlay').style.display = 'none';
 }
+
 // Function to show the address form
 function showAddressForm() {
   // Create overlay
@@ -75,6 +77,7 @@ function showAddressForm() {
   overlay.style.display = 'block';
   document.getElementById("addressFormContainer").style.display = "block";
 }
+
 // Function to fetch cart items from server
 function fetchCartItems() {
   fetch("/api/cart")
@@ -82,6 +85,7 @@ function fetchCartItems() {
     .then((data) => {
       if (data.cart && data.cart.items && data.cart.items.length > 0) {
         // We have items, render them
+        console.log("data:", data.cart);
         renderCartItems(data.cart.items);
         updateCartSummary(data.cart);
 
@@ -141,22 +145,56 @@ function renderCartItems(items) {
   });
 }
 
-// Function to update cart summary
-function updateCartSummary(cart) {
+// Function to update cart summary (now accepts an optional deliveryCharge parameter)
+function updateCartSummary(cart, deliveryCharge) {
   document.getElementById("subtotal").textContent = `₹${cart.subtotal || 0}`;
-  document.getElementById("deliveryCharge").textContent = `₹${
-    cart.deliveryCharge || 0
-  }`;
-  document.getElementById("discount").textContent = `₹${cart.discount || 0}`;
-  document.getElementById("totalAmount").textContent = `₹${cart.total || 0}`;
+  
+  // Use provided delivery charge or default from cart
+  const finalDeliveryCharge = deliveryCharge !== undefined ? deliveryCharge : (cart.deliveryCharge || 0);
+  document.getElementById("deliveryCharge").textContent = `₹${finalDeliveryCharge}`;
+  
+  // Store original discount in a hidden field and visible field
+  const discountValue = cart.discount || 0;
+  document.getElementById("discount").textContent = `₹${discountValue}`;
+  
+  // Make sure the originalDiscount element exists
+  const originalDiscountElement = document.getElementById("originalDiscount");
+  if (originalDiscountElement) {
+    originalDiscountElement.textContent = `₹${discountValue}`;
+  } else {
+    // Create a hidden element to store original discount if it doesn't exist
+    const hiddenElement = document.createElement("span");
+    hiddenElement.id = "originalDiscount";
+    hiddenElement.style.display = "none";
+    hiddenElement.textContent = `₹${discountValue}`;
+    document.body.appendChild(hiddenElement);
+  }
+
+  // Calculate new total with potential custom delivery charge
+  const total = (cart.subtotal || 0) + finalDeliveryCharge - discountValue;
+  document.getElementById("totalAmount").textContent = `₹${Math.max(0, total)}`;
+
+  // Reset coin checkbox when updating cart
+  const useCoinsCheckbox = document.getElementById("useCoinsCheckbox");
+  if (useCoinsCheckbox) {
+    useCoinsCheckbox.checked = false;
+  }
+
+  // Update coin value display
+  const coinValueElement = document.getElementById("coinValue");
+  if (coinValueElement) {
+    coinValueElement.textContent = "₹0";
+  }
 
   // Update cart badge
   const cartBadge = document.querySelector(".cart-badge");
-  const totalItems = cart.items.reduce(
-    (sum, item) => sum + (item.quantity || 1),
-    0
-  );
-  cartBadge.textContent = totalItems;
+  if (cartBadge) {
+    const totalItems = cart.items.reduce(
+      (sum, item) => sum + (item.quantity || 1),
+      0
+    );
+    cartBadge.textContent = totalItems;
+  }
 }
 
 // Function to remove item from cart
@@ -194,7 +232,7 @@ function updateQuantity(itemId, change) {
       if (data.success) {
         fetchCartItems(); // Refresh cart
       } else {
-        alertBox("Failed to update quantity","error", 3000);
+        alertBox("Failed to update quantity", "error", 3000);
       }
     })
     .catch((error) => {
@@ -206,20 +244,23 @@ function updateQuantity(itemId, change) {
 function processCheckout() {
   const selectedAddress = document.querySelector(".address-card.selected");
   const selectedPayment = document.querySelector(".payment-option.selected");
+  const useCoinsCheckbox = document.getElementById("useCoinsCheckbox");
+  const quickDeliveryToggle = document.getElementById("quickDeliveryToggle");
 
   if (!selectedAddress) {
-    alertBox("Please select a delivery address","info", 3000);
+    alertBox("Please select a delivery address", "info", 3000);
     return;
   }
 
   if (!selectedPayment) {
-    alertBox("Please select a payment method","info", 3000);
+    alertBox("Please select a payment method", "info", 3000);
     return;
   }
 
   const addressId = selectedAddress.dataset.id;
-  const paymentMethod =
-    selectedPayment.querySelector(".payment-name").textContent;
+  const paymentMethod = selectedPayment.querySelector(".payment-name").textContent;
+  const useCoins = useCoinsCheckbox ? useCoinsCheckbox.checked : false;
+  const quickDelivery = quickDeliveryToggle ? quickDeliveryToggle.checked : false;
 
   fetch("/api/checkout", {
     method: "POST",
@@ -229,6 +270,8 @@ function processCheckout() {
     body: JSON.stringify({
       addressId,
       paymentMethod,
+      useCoins,
+      quickDelivery
     }),
   })
     .then((response) => response.json())
@@ -236,15 +279,14 @@ function processCheckout() {
       if (data.success) {
         window.location.href = `/order-confirmation/${data.orderId}`;
       } else {
-        alertBox("Checkout failed: " + data.message,"error", 3000);
+        alertBox("Checkout failed: " + data.message, "error", 3000);
       }
     })
     .catch((error) => {
       console.error("Error during checkout:", error);
-      alertBox("An error occurred during checkout","error", 3000);
+      alertBox("An error occurred during checkout", "error", 3000);
     });
 }
-
 // Function to render sample data for demonstration
 function renderSampleData() {
   const sampleCart = {
@@ -273,33 +315,6 @@ function renderSampleData() {
   document.querySelector(".cart-empty").style.display = "none";
 }
 
-// Add this to your cart page JavaScript file (e.g., cartScript.js)
-document.addEventListener("DOMContentLoaded", function () {
-  // Existing code...
-
-  // Fetch user addresses
-  fetchUserAddresses();
-
-  // Add event listener for Add New Address
-  document.querySelector(".add-address").addEventListener("click", function () {
-    // Show address form
-    document.getElementById("addressFormContainer").style.display = "block";
-  });
-
-  // Add event listeners for address form
-  document
-    .getElementById("cancelAddressBtn")
-    .addEventListener("click", function () {
-      document.getElementById("addAddressForm").style.display = "none";
-    });
-
-  document
-    .getElementById("addAddressForm")
-    .addEventListener("submit", function (e) {
-      e.preventDefault();
-      addNewAddress();
-    });
-});
 // Function to fetch user addresses
 function fetchUserAddresses() {
   fetch('/api/user/addresses')
@@ -312,6 +327,12 @@ function fetchUserAddresses() {
         // Show addresses container and hide "no addresses" message
         document.getElementById('addressesContainer').style.display = 'block';
         document.getElementById('noAddressesMessage').style.display = 'none';
+        
+        // Find default address and fetch its delivery charge
+        const defaultAddress = data.addresses.find(addr => addr.isDefault) || data.addresses[0];
+        if (defaultAddress) {
+          fetchDeliveryCharge(defaultAddress._id);
+        }
       } else {
         // No addresses
         document.getElementById('addressesContainer').style.display = 'none';
@@ -347,6 +368,11 @@ function renderAddresses(addresses) {
       addressCard.classList.add('selected');
     }
     
+    // Include delivery charge in the data attribute (if available)
+    if (address.deliveryCharge !== undefined) {
+      addressCard.dataset.deliveryCharge = address.deliveryCharge;
+    }
+    
     addressCard.innerHTML = `
       <div class="address-icon">
         <i class="fas fa-${address.type === 'Home' ? 'home' : address.type === 'Work' ? 'building' : 'map-marker-alt'}"></i>
@@ -355,20 +381,85 @@ function renderAddresses(addresses) {
         <div class="address-type">${address.type}</div>
         <div class="address-line">${address.street}</div>
         <div class="address-line">${address.city}, ${address.state} - ${address.pincode}</div>
+        ${address.deliveryCharge !== undefined ? 
+          `<div class="delivery-charge">Pickup & Delivery: ₹${address.deliveryCharge}</div>` : ''}
       </div>
     `;
     
-    // Add click event listener to select address
+    // Add click event listener to select address and update delivery charge
     addressCard.addEventListener('click', function() {
       document.querySelectorAll('.address-card').forEach(card => {
         card.classList.remove('selected');
       });
       this.classList.add('selected');
+      
+      // Fetch delivery charge for this address
+      fetchDeliveryCharge(address._id);
     });
     
     addressesList.appendChild(addressCard);
   });
 }
+
+// Function to fetch delivery charge for an address
+function fetchDeliveryCharge(addressId) {
+  fetch(`/api/user/address/${addressId}/deliveryCharge`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.deliveryCharge !== undefined) {
+        // Get the current cart values
+        const currentSubtotal = parseFloat(document.getElementById("subtotal").textContent.replace("₹", "")) || 0;
+        const currentDiscount = parseFloat(document.getElementById("discount").textContent.replace("₹", "")) || 0;
+        
+        // Update delivery charge display (use standard by default)
+        document.getElementById("deliveryCharge").textContent = `₹${data.deliveryCharge}`;
+        
+        // Update total
+        const total = currentSubtotal + data.deliveryCharge - currentDiscount;
+        document.getElementById("totalAmount").textContent = `₹${Math.max(0, total)}`;
+        
+        // Update selected address card with both delivery charges
+        const selectedAddress = document.querySelector('.address-card.selected');
+        if (selectedAddress) {
+          selectedAddress.dataset.deliveryCharge = data.deliveryCharge;
+          selectedAddress.dataset.quickDeliveryCharge = data.quickDeliveryCharge || (data.deliveryCharge + 40);
+        }
+        
+        // If there's a delivery charge display element in the address card, update it
+        if (selectedAddress && selectedAddress.querySelector('.delivery-charge')) {
+          selectedAddress.querySelector('.delivery-charge').textContent = `Delivery: ₹${data.deliveryCharge}`;
+        } else if (selectedAddress) {
+          // Add delivery charge display if it doesn't exist
+          const deliveryChargeElement = document.createElement('div');
+          deliveryChargeElement.className = 'delivery-charge';
+          deliveryChargeElement.textContent = `Delivery: ₹${data.deliveryCharge}`;
+          selectedAddress.querySelector('.address-details').appendChild(deliveryChargeElement);
+        }
+        
+        // Reset quick delivery toggle when changing address
+        const quickDeliveryToggle = document.getElementById("quickDeliveryToggle");
+        if (quickDeliveryToggle) {
+          quickDeliveryToggle.checked = false;
+        }
+        
+        // Hide quick delivery badge
+        const quickBadge = document.getElementById("quickDeliveryBadge");
+        if (quickBadge) {
+          quickBadge.style.display = "none";
+        }
+        
+        // Reset delivery method text
+        const deliveryMethodText = document.getElementById("deliveryMethodText");
+        if (deliveryMethodText) {
+          deliveryMethodText.textContent = "Standard Delivery (2-3 days)";
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching delivery charge:', error);
+    });
+}
+
 
 // Function to add new address
 function addNewAddress() {
@@ -399,68 +490,24 @@ function addNewAddress() {
       // Hide form and refresh addresses
       hideAddressForm();
       document.getElementById("addAddressForm").reset();
+      
+      // Refresh addresses and update delivery charge if this is the default address
       fetchUserAddresses();
+      
+      // If the new address is default, fetch its delivery charge
+      if (isDefault && data.newAddress && data.newAddress._id) {
+        fetchDeliveryCharge(data.newAddress._id);
+      }
+      
+      alertBox("Address added successfully", "success", 3000);
     } else {
-      alertBox(data.error || 'Failed to add address',"error", 3000);
+      alertBox(data.error || 'Failed to add address', "error", 3000);
     }
   })
   .catch(error => {
     console.error('Error adding address:', error);
-    alertBox('An error occurred while adding the address',"error", 3000);
-    
-    // For demo purposes (when API is not available):
-    // hideAddressForm();
-    // document.getElementById("addAddressForm").reset();
-    // simulateAddressAdded();
+    alertBox('An error occurred while adding the address', "error", 3000);
   });
-}
-
-
-// For demo purposes - simulating address addition
-function simulateAddressAdded() {
-  const type = document.getElementById("addressType").value;
-  const street = document.getElementById("addressStreet").value;
-  const city = document.getElementById("addressCity").value;
-  const state = document.getElementById("addressState").value;
-  const pincode = document.getElementById("addressPincode").value;
-  
-  // Create a demo address object
-  const newAddress = {
-    _id: 'demo-' + Date.now(),
-    type: type,
-    street: street,
-    city: city,
-    state: state,
-    pincode: pincode,
-    isDefault: document.getElementById("isDefaultAddress").checked
-  };
-  
-  // Get current addresses or empty array
-  let addresses = [];
-  const addressesList = document.getElementById('addressesList');
-  if (addressesList && addressesList.children.length > 0) {
-    // There are already addresses
-    addresses = Array.from(addressesList.children).map(card => {
-      return {
-        _id: card.dataset.id,
-        type: card.querySelector('.address-type').textContent,
-        street: card.querySelector('.address-line:nth-child(2)').textContent,
-        city: card.querySelector('.address-line:nth-child(3)').textContent.split(',')[0].trim(),
-        state: card.querySelector('.address-line:nth-child(3)').textContent.split(',')[1].split('-')[0].trim(),
-        pincode: card.querySelector('.address-line:nth-child(3)').textContent.split('-')[1].trim(),
-        isDefault: card.classList.contains('selected')
-      };
-    });
-  }
-  
-  // Add new address to the list
-  addresses.push(newAddress);
-  
-  // Re-render all addresses
-  hideAddressForm();
-  document.getElementById('addressesContainer').style.display = 'block';
-  document.getElementById('noAddressesMessage').style.display = 'none';
-  renderAddresses(addresses);
 }
 
 // Function to update cart totals when using coins
@@ -508,88 +555,6 @@ function updateCartWithCoins() {
   // Update total amount
   const total = subtotal + deliveryCharge - totalDiscount;
   document.getElementById("totalAmount").textContent = `₹${Math.max(0, total)}`;
-}
-
-// Modify the updateCartSummary function to initialize coins properly
-function updateCartSummary(cart) {
-  document.getElementById("subtotal").textContent = `₹${cart.subtotal || 0}`;
-  document.getElementById("deliveryCharge").textContent = `₹${
-    cart.deliveryCharge || 0
-  }`;
-
-  // Store original discount in a hidden field and visible field
-  const discountValue = cart.discount || 0;
-  document.getElementById("discount").textContent = `₹${discountValue}`;
-  document.getElementById("originalDiscount").textContent = `₹${discountValue}`;
-
-  document.getElementById("totalAmount").textContent = `₹${cart.total || 0}`;
-
-  // Reset coin checkbox when updating cart
-  const useCoinsCheckbox = document.getElementById("useCoinsCheckbox");
-  if (useCoinsCheckbox) {
-    useCoinsCheckbox.checked = false;
-  }
-
-  // Update coin value display
-  const coinValueElement = document.getElementById("coinValue");
-  if (coinValueElement) {
-    coinValueElement.textContent = "₹0";
-  }
-
-  // Update cart badge
-  const cartBadge = document.querySelector(".cart-badge");
-  if (cartBadge) {
-    const totalItems = cart.items.reduce(
-      (sum, item) => sum + (item.quantity || 1),
-      0
-    );
-    cartBadge.textContent = totalItems;
-  }
-}
-
-// Updated processCheckout function
-function processCheckout() {
-  const selectedAddress = document.querySelector('.address-card.selected');
-  const selectedPayment = document.querySelector('.payment-option.selected');
-  const useCoinsCheckbox = document.getElementById("useCoinsCheckbox");
-  
-  if (!selectedAddress) {
-    alertBox('Please select a delivery address',"info", 3000);
-    return;
-  }
-  
-  if (!selectedPayment) {
-    alertBox('Please select a payment method',"info", 3000);
-    return;
-  }
-  
-  const addressId = selectedAddress.dataset.id;
-  const paymentMethod = selectedPayment.querySelector('.payment-name').textContent;
-  const useCoins = useCoinsCheckbox ? useCoinsCheckbox.checked : false;
-  
-  fetch('/api/checkout', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      addressId,
-      paymentMethod,
-      useCoins
-    })
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      window.location.href = `/order-confirmation/${data.orderId}`;
-    } else {
-      alertBox('Checkout failed: ' + data.message,"error", 3000);
-    }
-  })
-  .catch(error => {
-    console.error('Error during checkout:', error);
-    alertBox('An error occurred during checkout',"error", 3000);
-  });
 }
 
 function alertBox(text, type = "info", duration = 3000) {
@@ -703,4 +668,72 @@ function alertBox(text, type = "info", duration = 3000) {
   
   // Return the alert box element in case further manipulation is needed
   return alertBox;
+}
+
+// Add this to the end of the DOMContentLoaded event listener in paste-3.txt
+// Quick delivery toggle event listener
+const quickDeliveryToggle = document.getElementById("quickDeliveryToggle");
+const quickCont=document.getElementsByClassName("quick-delivery-toggle")
+if (quickDeliveryToggle) {
+  quickDeliveryToggle.addEventListener("change", function() {
+    updateDeliveryMethod();
+    quickCont[0].style.borderColor = this.checked ? "#e0576e" : "#eee";
+  });
+}
+
+// Function to update delivery method (standard or quick)
+function updateDeliveryMethod() {
+  const quickDeliveryToggle = document.getElementById("quickDeliveryToggle");
+  const selectedAddress = document.querySelector(".address-card.selected");
+  
+  if (!selectedAddress) {
+    alertBox("Please select a delivery address first", "info", 3000);
+    // Reset toggle if no address selected
+    if (quickDeliveryToggle) {
+      quickDeliveryToggle.checked = false;
+    }
+    return;
+  }
+  
+  // Get current cart data
+  const subtotal = parseFloat(document.getElementById("subtotal").textContent.replace("₹", "")) || 0;
+  const currentDiscount = parseFloat(document.getElementById("discount").textContent.replace("₹", "")) || 0;
+  
+  // Get standard and quick delivery charges from the selected address
+  const standardDeliveryCharge = parseFloat(selectedAddress.dataset.deliveryCharge) || 0;
+  const quickDeliveryCharge = parseFloat(selectedAddress.dataset.quickDeliveryCharge) || 0;
+  
+  let deliveryCharge = standardDeliveryCharge;
+  let deliveryText = "Standard Delivery (2-3 days)";
+  
+  // Update delivery method text and charge based on toggle state
+  if (quickDeliveryToggle && quickDeliveryToggle.checked) {
+    deliveryCharge = quickDeliveryCharge;
+    deliveryText = "Quick Delivery (Get it Tomorrow)";
+    
+    // Show the quick delivery badge
+    const quickBadge = document.getElementById("quickDeliveryBadge");
+    if (quickBadge) {
+      quickBadge.style.display = "flex";
+    }
+  } else {
+    // Hide the quick delivery badge
+    const quickBadge = document.getElementById("quickDeliveryBadge");
+    if (quickBadge) {
+      quickBadge.style.display = "none";
+    }
+  }
+  
+  // Update delivery text
+  const deliveryMethodText = document.getElementById("deliveryMethodText");
+  if (deliveryMethodText) {
+    deliveryMethodText.textContent = deliveryText;
+  }
+  
+  // Update delivery charge in cart summary
+  document.getElementById("deliveryCharge").textContent = `₹${deliveryCharge}`;
+  
+  // Update total
+  const total = subtotal + deliveryCharge - currentDiscount;
+  document.getElementById("totalAmount").textContent = `₹${Math.max(0, total)}`;
 }

@@ -36,6 +36,8 @@ const setupRecaptcha = () => {
   return window.recaptchaVerifier.render();
 };
 
+
+
 // ✅ Form submit listener for phone number
 document.getElementById("phoneNumberForm").addEventListener("submit", async (e) => {
   e.preventDefault();

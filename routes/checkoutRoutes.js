@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
       return res.status(401).json({ error: 'User not authenticated' });
     }
     const userId = req.session.userId;
-    const { addressId, paymentMethod, useCoins } = req.body;
+    const { addressId, paymentMethod, useCoins, quickDelivery } = req.body;
    
     // Find the user's cart
     const cart = await Cart.findOne({ userId }).populate('items');
@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Cart is empty' });
     }
    
-    // Calculate cart totals
+    // Calculate cart totals (for subtotal)
     await calculateCartTotals(cart);
    
     // Find the user to get address details and coin balance
@@ -61,9 +61,23 @@ router.post('/', async (req, res) => {
       user.coins -= coinDiscount;
       await user.save();
     }
+    
+    // Determine delivery charge based on the selected address and delivery option
+    let deliveryCharge;
+    
+    // Use quickDeliveryCharge if quick delivery is selected, otherwise use standard deliveryCharge
+    if (quickDelivery && selectedAddress.quickDeliveryCharge) {
+      deliveryCharge = selectedAddress.quickDeliveryCharge;
+    } else {
+      // Use the address-specific delivery charge for standard delivery
+      deliveryCharge = selectedAddress.deliveryCharge || 0;
+    }
    
     // Create the order
     const orderNumber = 'ORD' + Date.now().toString().substring(5);
+    
+    // Calculate total with the correct delivery charge
+    const total = cart.subtotal + deliveryCharge - cart.discount - coinDiscount;
    
     const order = new Order({
       orderNumber,
@@ -93,11 +107,24 @@ router.post('/', async (req, res) => {
       },
       paymentMethod,
       subtotal: cart.subtotal,
-      deliveryCharge: cart.deliveryCharge,
+      deliveryCharge: deliveryCharge,
       discount: cart.discount,
+      quickDelivery: quickDelivery,
       coinDiscount: coinDiscount,
-      total: cart.total - coinDiscount,
-      status: 'Placed'
+      total: total,
+      status: 'Placed',
+      // If quick delivery is selected, reduce the estimated delivery time
+      estimatedDelivery: quickDelivery ? 
+        (() => {
+          const date = new Date();
+          date.setDate(date.getDate() + 1); // 3 days for quick delivery
+          return date;
+        })() : 
+        (() => {
+          const date = new Date();
+          date.setDate(date.getDate() + 7); // 7 days for standard delivery
+          return date;
+        })()
     });
    
     await order.save();
@@ -105,14 +132,28 @@ router.post('/', async (req, res) => {
     // Clear the cart
     cart.items = [];
     await cart.save();
+    
     // Process referral reward
     await processReferralReward(req.session.userId);
-    res.json({ success: true, orderId: orderNumber });
+    
+    res.json({ 
+      success: true, 
+      orderId: orderNumber,
+      orderDetails: {
+        subtotal: cart.subtotal,
+        deliveryCharge: deliveryCharge,
+        discount: cart.discount,
+        coinDiscount: coinDiscount,
+        total: total,
+        quickDelivery: quickDelivery
+      }
+    });
   } catch (error) {
     console.error('Error processing checkout:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 async function processReferralReward(userId) {
   try {
     // Find the user who placed the order

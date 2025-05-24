@@ -120,11 +120,6 @@ router.post('/registerWithPhone', async (req, res) => {
           coins: 10
         }
       });
-      
-      // Give sign-up bonus to new user for using a referral code
-      // await User.findByIdAndUpdate(user._id, {
-      //   $inc: { coins: 50 } // Additional 50 coins for using referral code
-      // });
     }
     
     // Set session
@@ -226,6 +221,7 @@ async function updateReferralReward(userId) {
     console.error('Error processing referral reward:', error);
   }
 }
+
 // Login (for backward compatibility or email login)
 router.post('/login', async (req, res) => {
   try {
@@ -322,18 +318,31 @@ router.post('/address', async (req, res) => {
     }
     
     // Add new address
-    user.addresses.push({
+    const newAddress = {
       type,
       street,
       city,
       state,
       pincode,
       isDefault: isDefault || false
-    });
+    };
     
+    user.addresses.push(newAddress);
+    
+    // Save user - this will trigger the geocoding and delivery charge calculation middleware
     await user.save();
     
-    res.json({ success: true, addresses: user.addresses });
+    // Find the newly added address to get its computed delivery charge
+    const addedAddress = user.addresses[user.addresses.length - 1];
+    
+    res.json({ 
+      success: true, 
+      addresses: user.addresses,
+      newAddress: {
+        ...addedAddress.toObject(),
+        deliveryCharge: addedAddress.deliveryCharge || 0
+      }
+    });
   } catch (error) {
     console.error('Error adding address:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -370,19 +379,25 @@ router.put('/address/:addressId', async (req, res) => {
     }
     
     // Update address
-    user.addresses[addressIndex] = {
-      _id: user.addresses[addressIndex]._id, // Keep the original ID
-      type: type || user.addresses[addressIndex].type,
-      street: street || user.addresses[addressIndex].street,
-      city: city || user.addresses[addressIndex].city,
-      state: state || user.addresses[addressIndex].state,
-      pincode: pincode || user.addresses[addressIndex].pincode,
-      isDefault: isDefault !== undefined ? isDefault : user.addresses[addressIndex].isDefault
-    };
+    if (type) user.addresses[addressIndex].type = type;
+    if (street) user.addresses[addressIndex].street = street;
+    if (city) user.addresses[addressIndex].city = city;
+    if (state) user.addresses[addressIndex].state = state;
+    if (pincode) user.addresses[addressIndex].pincode = pincode;
+    if (isDefault !== undefined) user.addresses[addressIndex].isDefault = isDefault;
     
+    // Reset location and delivery charge to trigger recalculation
+    user.addresses[addressIndex].location = undefined;
+    user.addresses[addressIndex].deliveryCharge = undefined;
+    
+    // Save user - this will trigger the geocoding and delivery charge calculation middleware
     await user.save();
     
-    res.json({ success: true, addresses: user.addresses });
+    res.json({ 
+      success: true, 
+      addresses: user.addresses,
+      updatedAddress: user.addresses[addressIndex]
+    });
   } catch (error) {
     console.error('Error updating address:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -482,40 +497,6 @@ router.put('/profile', async (req, res) => {
   }
 });
 
-// Update password
-// router.put('/updatePassword', async (req, res) => {
-//   try {
-//     if (!req.session.userId) {
-//       return res.status(401).json({ error: 'User not authenticated' });
-//     }
-
-//     const userId = req.session.userId;
-//     const { currentPassword, newPassword } = req.body;
-    
-//     const user = await User.findById(userId);
-//     if (!user) {
-//       return res.status(404).json({ error: 'User not found' });
-//     }
-    
-//     // Verify current password
-//     const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
-//     if (!isPasswordValid) {
-//       return res.status(401).json({ error: 'Current password is incorrect' });
-//     }
-    
-//     // Hash new password
-//     const hashedPassword = await bcrypt.hash(newPassword, 10);
-//     user.password = hashedPassword;
-    
-//     await user.save();
-    
-//     res.json({ success: true, message: 'Password updated successfully' });
-//   } catch (error) {
-//     console.error('Error updating password:', error);
-//     res.status(500).json({ error: 'Internal server error' });
-//   }
-// });
-
 // Get user coins
 router.get('/coins', async (req, res) => {
   try {
@@ -581,6 +562,46 @@ router.get('/defaultAddress', async (req, res) => {
   }
 });
 
+// Update the delivery charge API route to include quick delivery charge
+router.get('/address/:addressId/deliveryCharge', async (req, res) => {
+  try {
+    if (!req.session.userId) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
+
+    const userId = req.session.userId;
+    const addressId = req.params.addressId;
+    
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    // Find the address
+    const address = user.addresses.find(addr => addr._id.toString() === addressId);
+    if (!address) {
+      return res.status(404).json({ error: 'Address not found' });
+    }
+    
+    // Return both standard and quick delivery charges
+    res.json({ 
+      deliveryCharge: address.deliveryCharge || 0,
+      quickDeliveryCharge: address.quickDeliveryCharge || 0,
+      address: {
+        _id: address._id,
+        type: address.type,
+        street: address.street,
+        city: address.city,
+        state: address.state,
+        pincode: address.pincode
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching delivery charges:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Set default address
 router.post('/setDefaultAddress/:addressId', async (req, res) => {
   try {
@@ -612,12 +633,17 @@ router.post('/setDefaultAddress/:addressId', async (req, res) => {
     
     await user.save();
     
-    res.json({ success: true, addresses: user.addresses });
+    res.json({ 
+      success: true, 
+      addresses: user.addresses,
+      defaultAddress: user.addresses[addressIndex]
+    });
   } catch (error) {
     console.error('Error setting default address:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 // Validate referral code
 router.post('/validate-referral', async (req, res) => {
   try {
@@ -673,4 +699,5 @@ router.get('/referral-stats', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 module.exports = router;

@@ -1,4 +1,5 @@
 @import url("https://fonts.cdnfonts.com/css/segoe-ui-4");
+@import url('https://fonts.cdnfonts.com/css/homizio');
 #loader {
   position: fixed;
   top: 0;
@@ -214,8 +215,11 @@ header {
 /* Service Categories */
 .service-categories {
   background-color: white;
-  padding: 20px;
+  /* padding: 20px; */
   border-radius: 8px;
+  height: 50vh; 
+  width: 100%;
+  margin: auto;
   /* margin-bottom: 30px; */
 }
 
@@ -223,12 +227,16 @@ header {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
+  height: 100%;
+  padding: 10px;
+  padding: 15px 19px;
+  justify-content: center;
 }
 
 .category-item {
   display: flex;
   align-items: center;
-  background-color: #f5f5f5;
+  background-color: #FDF6F0;
   border-radius: 8px;
   padding: 15px;
   cursor: pointer;
@@ -728,11 +736,13 @@ footer {
   }
 
   .category-icon {
-    width: 40px;
-    height: 40px;
+    width: 70px;
+    height: 70px;
+
   }
 
   .category-name {
-    font-size: 12px;
+    font-size: 15px;
+    text-align: left;
   }
 }
