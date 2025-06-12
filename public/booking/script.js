@@ -159,26 +159,12 @@ function renderBlousePage() {
             </div>
             <div class="option-name">Home Visit for Measurement</div>
             <div class="option-price">
-              <span class="price-highlight">+₹29</span>
+              <span class="price-highlight">+₹89</span>
             </div>
           </div>
         </div>
 
-        <div
-          class="option-card"
-          style="margin-top: 15px; opacity: 0.7; cursor: not-allowed"
-        >
-          <div class="option-image">
-            <img
-              src="/imgs/ChatGPT Image Apr 9, 2025, 08_12_29 PM.png"
-              alt="AI Measurement"
-            />
-          </div>
-          <div class="option-name"><span class="coming-soon">Coming Soon</span>
-            AI Measurement 
-          </div>
-          <div class="option-price">Premium Feature</div>
-        </div>
+        
       </div>
 
       <!-- Total Section -->
@@ -291,7 +277,7 @@ function updateBlouseTotal() {
       .querySelector(".option-name")
       .textContent.includes("Home Visit")
   ) {
-    measurementCharge = 29;
+    measurementCharge = 89;
   }
 
   // Design Option
@@ -333,89 +319,13 @@ function renderDrapingPage() {
               />
             </div>
             <div class="design-name">Traditional</div>
-            <div class="option-price">₹999</div>
-          </div>
-
-          <div class="design-item">
-            <div class="design-check"><i class="fas fa-check"></i></div>
-            <div class="design-image">
-              <img
-                src="/imgs/WhatsApp Image 2025-04-10 at 16.50.33_1898b69a.jpg"
-                alt="South Indian Style"
-              />
-            </div>
-            <div class="design-name">South Indian</div>
-            <div class="option-price">₹460</div>
-          </div>
-          
-          <div class="design-item" style="opacity: 0.7; cursor: not-allowed;">
-            <div class="design-image">
-              <img
-                src="/imgs/WhatsApp Image 2025-04-10 at 16.50.33_6db9f89f.jpg"
-                alt="Bengali Style"
-              />
-            </div>
-            <div class="design-name"><span class="coming-soon">Coming Soon</span>Bengali Style</div>
-            <div class="option-price">₹526</div>
-          </div>
-
-          <div class="design-item" style="opacity: 0.7; cursor: not-allowed;">
-            <div class="design-image">
-              <img
-                src="/imgs/WhatsApp Image 2025-04-10 at 16.50.32_f6590ff7.jpg"
-                alt="Maharashtrian Style"
-              />
-            </div>
-            <div class="design-name"><span class="coming-soon">Coming Soon</span>Maharashtrian </div>
-            <div class="option-price">₹820</div>
+            <div class="option-price">₹500</div>
           </div>
 
           
-
-          <div class="design-item" style="opacity: 0.7; cursor: not-allowed;">
-            <div class="design-image">
-              <img
-                src="/imgs/WhatsApp Image 2025-04-10 at 16.50.32_dd0d4202.jpg"
-                alt="Gujarati Style"
-              />
-            </div>
-            <div class="design-name"><span class="coming-soon">Coming Soon</span>Gujarati </div>
-            <div class="option-price">₹800</div>
-          </div>
         </div>
       </div>
 
-      <!-- Accessories Section -->
-      <div class="section">
-        <h2 class="section-title">Add Accessories</h2>
-        <div class="options-grid">
-          <div class="option-card" style="opacity: 0.7; cursor: not-allowed;">
-            <div class="option-image">
-              <img
-                src="https://i.pinimg.com/originals/ac/11/9e/ac119e6f01360ef96f5d7a64171fad51.jpg"
-                alt="Jewelry Set"
-              />
-            </div>
-            <div class="option-name"><span class="coming-soon">Coming Soon</span>Jewelry Set </div>
-            <div class="option-price">
-              <span class="price-highlight">+₹299</span>
-            </div>
-          </div>
-
-          <div class="option-card" style="opacity: 0.7; cursor: not-allowed;">
-            <div class="option-image">
-              <img
-                src="https://cdn0.weddingwire.in/article/2483/original/960/jpg/113842-makeover-by-sheetal-dey2.jpeg"
-                alt="Hair Accessories"
-              />
-            </div>
-            <div class="option-name"><span class="coming-soon">Coming Soon</span>Hair Accessories </div>
-            <div class="option-price">
-              <span class="price-highlight">+₹149</span>
-            </div>
-          </div>
-        </div>
-      </div>
       
       <!-- Special Instructions -->
       <div class="section">
@@ -441,10 +351,7 @@ function renderDrapingPage() {
           <span>Draping Style</span>
           <span id="draping-charge">₹999</span>
         </div>
-        <div class="total-row">
-          <span>Accessories</span>
-          <span id="accessories-charge">₹0</span>
-        </div>
+        
         <div class="total-row">
           <span>Location Fee</span>
           <span id="location-charge">₹0</span>
@@ -502,9 +409,8 @@ function updateDrapingTotal() {
   
   // Update total section
   document.getElementById("draping-charge").textContent = `₹${drapingCharge}`;
-  document.getElementById("accessories-charge").textContent = `₹${accessoriesCharge}`;
   document.getElementById("location-charge").textContent = `₹${locationCharge}`;
-  document.getElementById("total-charge").textContent = `₹${drapingCharge + accessoriesCharge + locationCharge}`;
+  document.getElementById("total-charge").textContent = `₹${drapingCharge + locationCharge}`;
 }
 
 // ====== SHARED FUNCTIONALITY ======

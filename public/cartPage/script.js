@@ -700,9 +700,10 @@ function updateDeliveryMethod() {
   const currentDiscount = parseFloat(document.getElementById("discount").textContent.replace("₹", "")) || 0;
   
   // Get standard and quick delivery charges from the selected address
-  const standardDeliveryCharge = parseFloat(selectedAddress.dataset.deliveryCharge) || 0;
+  let standardDeliveryCharge = parseFloat(selectedAddress.dataset.deliveryCharge) || 0;
   const quickDeliveryCharge = parseFloat(selectedAddress.dataset.quickDeliveryCharge) || 0;
-  
+
+
   let deliveryCharge = standardDeliveryCharge;
   let deliveryText = "Standard Delivery (2-3 days)";
   
